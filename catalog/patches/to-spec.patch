@@ -1,0 +1,20 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -6,7 +6,7 @@
+ 
+ This skill takes the current conversation context and codebase understanding and produces a spec. Do NOT interview the user; just synthesize what you already know.
+ 
+-The issue tracker and triage label vocabulary should have been provided to you. If not, tell the user to run `/setup-matt-pocock-skills`.
++Read `docs/agents/issue-tracker.md` for the tracker selected by toolkit setup. Do not rerun setup when that document exists. Triage labels are optional: use an existing configured label vocabulary if present; otherwise use `Status: ready-for-agent` in local tickets and do not create remote labels. Follow the user's requested publishing scope; keep a local draft when remote publication was not requested.
+ 
+ ## Process
+ 
+@@ -16,7 +16,7 @@
+ 
+ Check with the user that these seams match their expectations.
+ 
+-3. Write the spec using the template below, then publish it to the project issue tracker. Apply the `ready-for-agent` triage label - no need for additional triage.
++3. Write the spec using the template below, then publish it to the project issue tracker. Use `ready-for-agent` only if that label is already configured; otherwise record `Status: ready-for-agent` locally. Do not create labels implicitly.
+ 
+ <spec-template>
+ 

@@ -32,6 +32,7 @@ Diff so với upstream nằm trong `catalog/patches/` và được manifest tr�
 - Superpowers stop-server: canonicalize session path; cleanup đệ quy chỉ cho thư mục session có tiền tố brainstorm trong temp. Các thư mục session khác được giữ lại.
 - Superpowers standalone: bỏ namespace `superpowers:` tại entrypoint; kèm agent prompt code-reviewer để tránh phụ thuộc marketplace. Các tham chiếu còn lại dạng namespace là chỉ dẫn upstream; đọc hướng dẫn toolkit để ánh xạ sang tên standalone.
 - `ai-dev` là flow tổng quát viết lại từ MDM; không mang lệnh build, URL dịch vụ, contract hoặc quy tắc tenant của MDM.
+- AI Hero to-spec/to-tickets/code-review: đọc tracker đã được CLI cấu hình thay vì đòi setup lại; labels là tùy chọn và không tự tạo remote labels. Review có đường chạy tuần tự khi không dùng subagent.
 
 U+200B trong ví dụ fenced code của audit-context-building và U+200D trong ví dụ emoji Swift đã được đọc và xác nhận là nội dung minh họa. Các finding “send API key” trong MCP builder là ví dụ auth tới API đích, không yêu cầu lấy khóa từ máy.
 
