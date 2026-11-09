@@ -1,0 +1,73 @@
+[
+  {
+    "url": "https://github.com/mattpocock/skills",
+    "revision": "4ae2317ddb22b046e26455e4f9c9b3aaaf62212d",
+    "role": "selected snapshots"
+  },
+  {
+    "url": "https://github.com/anthropics/skills",
+    "revision": "2c5958ecac7cee2b583967a2c4981d0f4a75c579",
+    "role": "selected snapshots"
+  },
+  {
+    "url": "https://github.com/openai/plugins",
+    "revision": "d420d13051bffe4543ed39e30fa46b87148e47dd",
+    "role": "catalog-only plugins; no code redistributed"
+  },
+  {
+    "url": "https://github.com/vercel-labs/agent-skills",
+    "revision": "1a2c79d4e6c4a2283dc2c614b6538cbe1ed5ca62",
+    "role": "selected snapshots"
+  },
+  {
+    "url": "https://github.com/trailofbits/skills",
+    "revision": "e4dd0bb5b15535f7c5a0834187dffba6ac37e4ff",
+    "role": "selected snapshots"
+  },
+  {
+    "url": "https://github.com/obra/superpowers",
+    "revision": "22f0b463e7a5e579904dd6211a520321035526f7",
+    "role": "selected snapshots"
+  },
+  {
+    "url": "https://github.com/addyosmani/agent-skills",
+    "revision": "301b02b12bff98e4688e6984af6556802322bbde",
+    "role": "catalog-only plugins; no code redistributed"
+  },
+  {
+    "url": "https://github.com/DietrichGebert/ponytail",
+    "revision": "96608e078b2d5ea607c5c3b8b5a54d1c1fba6846",
+    "role": "selected snapshots"
+  },
+  {
+    "url": "https://github.com/sanyuan0704/sanyuan-skills",
+    "revision": "08b6572ef108f22d4e8a3ecf9182a4bbef097744",
+    "role": "selected snapshots"
+  },
+  {
+    "url": "https://github.com/leonxlnx/taste-skill",
+    "revision": "f6b76575f949707b4e3c37cd86cb44b0b98643e8",
+    "role": "selected snapshots"
+  },
+  {
+    "url": "https://github.com/usestrix/strix",
+    "revision": "215482eb2204cd30ac6b87520e3f5c6511e2e2e8",
+    "role": "selected snapshots"
+  },
+  {
+    "url": "https://github.com/upstash/context7",
+    "revision": "6e68ffcbad0e23cf4fa8c11795ce9e551aeef19b",
+    "role": "selected snapshots"
+  },
+  {
+    "url": "https://www.aihero.dev/",
+    "role": "discovery; actual source mattpocock/skills"
+  },
+  {
+    "url": "https://skills.sh/",
+    "aliases": [
+      "https://www.skills.sh/"
+    ],
+    "role": "discovery; download from authors, not leaderboard copies"
+  }
+]

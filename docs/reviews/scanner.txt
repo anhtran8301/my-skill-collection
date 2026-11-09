@@ -1,0 +1,594 @@
+# skill-security-review scan: vendor/skills
+
+Files: 831  (code 203, markdown 403, config 37, trace 0, vendored 0, binary 0, asset 188)
+Executable surface: 203 script(s)
+Declared allowed-tools: Workflow Task Read Grep Glob
+Auto-run entrypoints: none detected
+Findings: 194  (high:85, medium:32, low:4, info:73)
+
+## tier: on-demand
+  [high] process-exec/exec-child_process  brainstorming/scripts/server.cjs:537
+      const cp = require('child_process');
+      -> Node process execution module.
+  [high] filesystem/fs-destructive  brainstorming/scripts/server.cjs:604
+      if (fs.existsSync(eventsFile)) fs.unlinkSync(eventsFile);
+      -> Deletes files/dirs.
+  [high] filesystem/fs-destructive  brainstorming/scripts/server.cjs:619
+      if (fs.existsSync(infoFile)) fs.unlinkSync(infoFile);
+      -> Deletes files/dirs.
+  [high] filesystem/fs-destructive  brainstorming/scripts/stop-server.sh:116
+      rm -rf "$SESSION_DIR"
+      -> Deletes files/dirs.
+  [high] process-exec/exec-py  codeql/scripts/test_build_log.py:16
+      def _bash(script: str, cwd: Path) -> subprocess.CompletedProcess[str]:
+      -> Python subprocess execution.
+  [high] process-exec/exec-py  codeql/scripts/test_build_log.py:17
+      return subprocess.run(
+      -> Python subprocess execution.
+  [high] process-exec/exec-py  codeql/scripts/test_build_log.py:67
+      result = subprocess.run(
+      -> Python subprocess execution.
+  [high] process-exec/exec-py  codeql/scripts/test_build_log.py:84
+      result = subprocess.run(
+      -> Python subprocess execution.
+  [high] process-exec/exec-py  codeql/scripts/test_find_databases.py:46
+      def _invoke(tmp_path: Path, *roots: str) -> subprocess.CompletedProcess[str]:
+      -> Python subprocess execution.
+  [high] process-exec/exec-py  codeql/scripts/test_find_databases.py:48
+      return subprocess.run(
+      -> Python subprocess execution.
+  [high] process-exec/exec-py  codeql/scripts/test_generation_scripts.py:179
+      ) -> subprocess.CompletedProcess[str]:
+      -> Python subprocess execution.
+  [high] process-exec/exec-py  codeql/scripts/test_generation_scripts.py:192
+      return subprocess.run(
+      -> Python subprocess execution.
+  [high] process-exec/exec-py  codeql/scripts/test_script_flags.py:49
+      result = subprocess.run(
+      -> Python subprocess execution.
+  [high] process-exec/exec-py  codeql/scripts/test_shell_blocks.py:112
+      result = subprocess.run(["bash", "-n"], input=cleaned, capture_output=True, text=True)
+      -> Python subprocess execution.
+  [high] process-exec/exec-py  codeql/scripts/test_verify_query_suite.py:12
+      def _result(stdout: str, returncode: int = 0, stderr: str = "") -> subprocess.CompletedProcess[str]:
+      -> Python subprocess execution.
+  [high] process-exec/exec-py  codeql/scripts/test_verify_query_suite.py:13
+      return subprocess.CompletedProcess([], returncode, stdout, stderr)
+      -> Python subprocess execution.
+  [high] process-exec/exec-py  codeql/scripts/verify_query_suite.py:31
+      result = subprocess.run(command, capture_output=True, text=True)
+      -> Python subprocess execution.
+  [high] network-egress/net-curl  design-taste-frontend/library/photos.json:2632
+      "alt": "Inside the curl of a breaking teal wave",
+      -> Shells out to curl/wget. Check URL and whether output is executed.
+  [high] secret-access/secret-keychain  design-taste-frontend/library/sites.json:2664
+      "idea": "A video editor presented as a bunch of collectable objects: 3D keychain charms in the hero and squircle effect tiles that behave like app icons everywhere else.",
+      -> Accesses the OS credential store.
+  [high] secret-access/secret-keychain  design-taste-frontend/library/sites.json:2673
+      "hero": "Soft grey vertical gradient, darker at the top, fading to near-white. Two floating light-grey rounded capsules form the nav: the left holds the script logo, five links and a kebab; the right 
+      -> Accesses the OS credential store.
+  [high] network-egress/net-curl  design-taste-frontend/library/sites.json:8205
+      "imagery": "Untouched magazine cover photography in the true 3:4 ratio, square corners, no filter, rendered as WebGL paper planes that curl in flight and unroll flat when they land. A full-screen film
+      -> Shells out to curl/wget. Check URL and whether output is executed.
+  [high] filesystem/fs-destructive  design-taste-frontend/scripts/assets.mjs:29
+      import { readFileSync, writeFileSync, existsSync, mkdirSync, createWriteStream, unlinkSync } from 'node:fs';
+      -> Deletes files/dirs.
+  [high] network-egress/net-curl  design-taste-frontend/scripts/assets.mjs:449
+      it.hint = 'Download it with --get: the museum\'s image server answers browsers and this script, and refuses plain curl or wget.';
+      -> Shells out to curl/wget. Check URL and whether output is executed.
+  [high] filesystem/fs-destructive  design-taste-frontend/scripts/assets.mjs:798
+      } catch (e) { out.destroy(); try { unlinkSync(file); } catch {} throw e; }
+      -> Deletes files/dirs.
+  [high] filesystem/fs-destructive  design-taste-frontend/scripts/assets.mjs:799
+      if (!n) { try { unlinkSync(file); } catch {} throw new Error('the video was empty.'); }
+      -> Deletes files/dirs.
+  [high] filesystem/fs-destructive  design-taste-frontend/scripts/inspect.mjs:16
+      import { existsSync, mkdirSync, readFileSync, writeFileSync, statSync, createReadStream, readdirSync, unlinkSync } from 'node:fs';
+      -> Deletes files/dirs.
+  [high] filesystem/fs-destructive  design-taste-frontend/scripts/inspect.mjs:69
+      for (const f of readdirSync(outDir)) if (isInspectionScreenshot(f)) unlinkSync(join(outDir, f));
+      -> Deletes files/dirs.
+  [high] process-exec/exec-child_process  design-taste-frontend/scripts/lib/cdp.mjs:4
+      import { spawn, spawnSync } from 'node:child_process';
+      -> Node process execution module.
+  [high] process-exec/exec-call  design-taste-frontend/scripts/lib/cdp.mjs:85
+      try { if (pid) { if (process.platform === 'win32') spawnSync('taskkill', ['/pid', String(pid), '/T', '/F'], { stdio: 'ignore' }); else process.kill(pid, 'SIGKILL'); } } catch {}
+      -> Runs a subprocess. NOTE: bare .exec( on a variable is usually a regex - verify.
+  [high] process-exec/exec-call  design-taste-frontend/scripts/lib/cdp.mjs:99
+      const proc = spawn(exe, args, { stdio: ['ignore', 'ignore', 'pipe'] });
+      -> Runs a subprocess. NOTE: bare .exec( on a variable is usually a regex - verify.
+  [high] dynamic-code/dyn-eval  design-taste-frontend/scripts/lib/cdp.mjs:204
+      async eval(fnOrExpr, arg) {
+      -> Runs code built at runtime.
+  [high] process-exec/exec-py  docx/scripts/accept_changes.py:68
+      result = subprocess.run(
+      -> Python subprocess execution.
+  [high] process-exec/exec-py  docx/scripts/accept_changes.py:76
+      except subprocess.TimeoutExpired:
+      -> Python subprocess execution.
+  [high] process-exec/exec-py  docx/scripts/accept_changes.py:99
+      subprocess.run(
+      -> Python subprocess execution.
+  [high] process-exec/exec-py  docx/scripts/office/soffice.py:21
+      return subprocess.run(["soffice"] + args, env=get_soffice_env(), **kwargs)
+      -> Python subprocess execution.
+  [high] process-exec/exec-py  docx/scripts/office/validators/redlining.py:192
+      result = subprocess.run(
+      -> Python subprocess execution.
+  [high] process-exec/exec-py  docx/scripts/office/validators/redlining.py:221
+      result = subprocess.run(
+      -> Python subprocess execution.
+  [high] process-exec/exec-py  docx/scripts/office/validators/redlining.py:247
+      except (subprocess.CalledProcessError, FileNotFoundError, Exception):
+      -> Python subprocess execution.
+  [high] process-exec/exec-py  pptx/scripts/office/soffice.py:21
+      return subprocess.run(["soffice"] + args, env=get_soffice_env(), **kwargs)
+      -> Python subprocess execution.
+  [high] process-exec/exec-py  pptx/scripts/office/validators/redlining.py:192
+      result = subprocess.run(
+      -> Python subprocess execution.
+  [high] process-exec/exec-py  pptx/scripts/office/validators/redlining.py:221
+      result = subprocess.run(
+      -> Python subprocess execution.
+  [high] process-exec/exec-py  pptx/scripts/office/validators/redlining.py:247
+      except (subprocess.CalledProcessError, FileNotFoundError, Exception):
+      -> Python subprocess execution.
+  [high] process-exec/exec-py  pptx/scripts/thumbnail.py:200
+      result = subprocess.run(
+      -> Python subprocess execution.
+  [high] process-exec/exec-py  sarif-parsing/resources/test_sarif_helpers.py:73
+      out = subprocess.run(["jq", program, str(path)], capture_output=True, text=True, check=True)
+      -> Python subprocess execution.
+  [high] filesystem/fs-destructive  semgrep/scripts/run-scans.sh:309
+      cleanup() { rm -rf "$WORK"; }
+      -> Deletes files/dirs.
+  [high] filesystem/fs-destructive  semgrep/scripts/run-scans.sh:387
+      rm -rf "$RAW_DIR"
+      -> Deletes files/dirs.
+  [high] filesystem/fs-destructive  semgrep/scripts/run-scans.sh:408
+      rm -rf "$dest"
+      -> Deletes files/dirs.
+  [high] filesystem/fs-destructive  semgrep/scripts/run-scans.sh:439
+      rm -rf "$dest"
+      -> Deletes files/dirs.
+  [high] process-exec/exec-py  semgrep/scripts/test_merge_sarif.py:78
+      def run_merge(raw: Path, out: Path, *flags: str) -> subprocess.CompletedProcess:
+      -> Python subprocess execution.
+  [high] process-exec/exec-py  semgrep/scripts/test_merge_sarif.py:79
+      return subprocess.run(
+      -> Python subprocess execution.
+  [high] process-exec/exec-py  semgrep/scripts/test_merge_sarif.py:151
+      proc = subprocess.run(
+      -> Python subprocess execution.
+  [high] process-exec/exec-py  semgrep/scripts/test_merge_sarif.py:418
+      proc = subprocess.run(
+      -> Python subprocess execution.
+  [high] process-exec/exec-py  skill-creator/scripts/improve_description.py:35
+      result = subprocess.run(
+      -> Python subprocess execution.
+  [high] process-exec/exec-py  skill-creator/scripts/run_eval.py:85
+      process = subprocess.Popen(
+      -> Python subprocess execution.
+  [high] process-exec/exec-py  skill-creator/scripts/run_eval.py:87
+      stdout=subprocess.PIPE,
+      -> Python subprocess execution.
+  [high] process-exec/exec-py  skill-creator/scripts/run_eval.py:88
+      stderr=subprocess.DEVNULL,
+      -> Python subprocess execution.
+  [high] process-exec/exec-child_process  vercel-optimize/lib/sanitizers/undeclared-dep.mjs:10
+      'dns', 'tls', 'util', 'url', 'stream', 'buffer', 'events', 'process', 'child_process',
+      -> Node process execution module.
+  [high] process-exec/exec-child_process  vercel-optimize/lib/vercel.mjs:3
+      import { execFile } from 'node:child_process';
+      -> Node process execution module.
+  [high] process-exec/exec-call  vercel-optimize/lib/vercel.mjs:87
+      return await exec(command.file, [...command.prefix, ...args], { windowsHide: true, ...opts });
+      -> Runs a subprocess. NOTE: bare .exec( on a variable is usually a regex - verify.
+  [high] process-exec/exec-child_process  vercel-optimize/lib/verify-claim.mjs:4
+      import { execFile } from 'node:child_process';
+      -> Node process execution module.
+  [high] process-exec/exec-py  webapp-testing/scripts/with_server.py:69
+      process = subprocess.Popen(
+      -> Python subprocess execution.
+  [high] process-exec/exec-py  webapp-testing/scripts/with_server.py:72
+      stdout=subprocess.PIPE,
+      -> Python subprocess execution.
+  [high] process-exec/exec-py  webapp-testing/scripts/with_server.py:73
+      stderr=subprocess.PIPE
+      -> Python subprocess execution.
+  [high] process-exec/exec-py  webapp-testing/scripts/with_server.py:88
+      result = subprocess.run(args.command)
+      -> Python subprocess execution.
+  [high] process-exec/exec-py  webapp-testing/scripts/with_server.py:98
+      except subprocess.TimeoutExpired:
+      -> Python subprocess execution.
+  [high] process-exec/exec-child_process  writing-skills/render-graphs.js:18
+      import { execFileSync } from 'child_process';
+      -> Node process execution module.
+  [high] process-exec/exec-call  writing-skills/render-graphs.js:72
+      return execFileSync('dot', ['-Tsvg'], {
+      -> Runs a subprocess. NOTE: bare .exec( on a variable is usually a regex - verify.
+  [high] process-exec/exec-call  writing-skills/render-graphs.js:113
+      execFileSync('dot', ['-V'], { stdio: 'ignore' });
+      -> Runs a subprocess. NOTE: bare .exec( on a variable is usually a regex - verify.
+  [high] process-exec/exec-py  xlsx/scripts/office/soffice.py:21
+      return subprocess.run(["soffice"] + args, env=get_soffice_env(), **kwargs)
+      -> Python subprocess execution.
+  [high] process-exec/exec-py  xlsx/scripts/office/validators/redlining.py:192
+      result = subprocess.run(
+      -> Python subprocess execution.
+  [high] process-exec/exec-py  xlsx/scripts/office/validators/redlining.py:221
+      result = subprocess.run(
+      -> Python subprocess execution.
+  [high] process-exec/exec-py  xlsx/scripts/office/validators/redlining.py:247
+      except (subprocess.CalledProcessError, FileNotFoundError, Exception):
+      -> Python subprocess execution.
+  [high] process-exec/exec-py  xlsx/scripts/recalc.py:43
+      subprocess.run(
+      -> Python subprocess execution.
+  [high] process-exec/exec-py  xlsx/scripts/recalc.py:47
+      except (FileNotFoundError, subprocess.TimeoutExpired):
+      -> Python subprocess execution.
+  [high] process-exec/exec-py  xlsx/scripts/recalc.py:66
+      except subprocess.TimeoutExpired:
+      -> Python subprocess execution.
+  [high] process-exec/exec-py  xlsx/scripts/recalc.py:191
+      result = subprocess.run(
+      -> Python subprocess execution.
+  [high] process-exec/exec-py  xlsx/scripts/recalc.py:194
+      except subprocess.TimeoutExpired:
+      -> Python subprocess execution.
+  [medium] network-egress/net-ws  brainstorming/scripts/helper.js:80
+      ws = new WebSocket(websocketUrl());
+      -> Opens a socket/websocket connection.
+  [medium] network-egress/net-http-import  brainstorming/scripts/server.cjs:2
+      const http = require('http');
+      -> Imports a network module.
+  [medium] process-exec/exec-backtick  codeql/scripts/test_generation_scripts.py:171
+      'exec python3 "$@"\n'
+      -> Possible shell command substitution.
+  [medium] process-exec/exec-backtick  codeql/scripts/test_script_flags.py:86
+      so the `jq -r` in `$(… --format=json | jq -r '.x')` is not mistaken for the
+      -> Possible shell command substitution.
+  [medium] process-exec/exec-backtick  codeql/scripts/test_shell_blocks.py:38
+      `VAR=$(cmd | wc -l)` consumes output and is fine. `cmd | tee "$LOG"` as a statement,
+      -> Possible shell command substitution.
+  [medium] process-exec/exec-backtick  codeql/scripts/test_shell_blocks.py:581
+      '`if ! DB_LIST=$("{baseDir}/scripts/find_databases.sh" …); then … fi` and loop over '
+      -> Possible shell command substitution.
+  [medium] network-egress/net-fetch  design-taste-frontend/scripts/assets.mjs:187
+      try { r = await fetch(url, { headers: { 'User-Agent': UA, Accept: 'application/json', ...headers }, signal: AbortSignal.timeout(ms) }); }
+      -> HTTP request. Check the destination host and payload.
+  [medium] network-egress/net-fetch  design-taste-frontend/scripts/assets.mjs:248
+      const r = await fetch(url, { headers: { ...headers, Range: `bytes=0-${want - 1}` }, signal: ac.signal, redirect: 'follow' });
+      -> HTTP request. Check the destination host and payload.
+  [medium] network-egress/net-fetch  design-taste-frontend/scripts/assets.mjs:742
+      try { r = await fetch(it.image, { headers: imageHeaders(it.image), signal: AbortSignal.timeout(90000) }); }
+      -> HTTP request. Check the destination host and payload.
+  [medium] network-egress/net-fetch  design-taste-frontend/scripts/assets.mjs:784
+      try { r = await fetch(it.image, { headers: { 'User-Agent': UA, Accept: 'video/*' }, signal: AbortSignal.timeout(600000) }); }
+      -> HTTP request. Check the destination host and payload.
+  [medium] network-egress/net-fetch  design-taste-frontend/scripts/assets.mjs:805
+      const pr = await fetch(it.poster, { headers: imageHeaders(it.poster), signal: AbortSignal.timeout(60000) });
+      -> HTTP request. Check the destination host and payload.
+  [medium] network-egress/net-http-import  design-taste-frontend/scripts/inspect.mjs:18
+      import { createServer } from 'node:http';
+      -> Imports a network module.
+  [medium] network-egress/net-ws  design-taste-frontend/scripts/lib/cdp.mjs:114
+      b.ws = new WebSocket(wsUrl);
+      -> Opens a socket/websocket connection.
+  [medium] network-egress/net-http-import  design-taste-frontend/scripts/scenes.mjs:15
+      import { createServer } from 'node:http';
+      -> Imports a network module.
+  [medium] network-egress/net-xhr  docx/scripts/office/helpers/__init__.py:6
+      import urllib.parse
+      -> HTTP client usage.
+  [medium] network-egress/net-xhr  docx/scripts/office/helpers/__init__.py:32
+      target = urllib.parse.unquote(target)
+      -> HTTP client usage.
+  [medium] network-egress/net-xhr  pptx/scripts/office/helpers/__init__.py:6
+      import urllib.parse
+      -> HTTP client usage.
+  [medium] network-egress/net-xhr  pptx/scripts/office/helpers/__init__.py:32
+      target = urllib.parse.unquote(target)
+      -> HTTP client usage.
+  [medium] network-egress/net-xhr  sarif-parsing/resources/sarif_helpers.py:15
+      from urllib.parse import unquote
+      -> HTTP client usage.
+  [medium] process-exec/exec-backtick  semgrep/scripts/run-scans.sh:436
+      ! join_rules=$(prune_yaml "$dest" -exec grep -qE "$JOIN_MODE_RE" {} \; \
+      -> Possible shell command substitution.
+  [medium] process-exec/exec-backtick  semgrep/scripts/run-scans.sh:437
+      -exec grep -qE "$JOIN_BLOCK_RE" {} \;); then
+      -> Possible shell command substitution.
+  [medium] secret-access/secret-provider-key  skill-creator/scripts/improve_description.py:6
+      uses the session's Claude Code auth, no separate ANTHROPIC_API_KEY needed).
+      -> Names a provider API key. Often just help text - check whether the value is read and then sent somewhere.
+  [medium] network-egress/net-fetch  vercel-optimize/lib/investigation-brief.mjs:605
+      hints.push('Next.js data fetch path: use `fetch(..., { next: { revalidate: seconds } })` or route-level `revalidate` only when it matches the project version and route semantics. Before recommending r
+      -> HTTP request. Check the destination host and payload.
+  [medium] network-egress/net-fetch  vercel-optimize/lib/scanners/cache-components-suspense-dedupe.mjs:65
+      ? `fetch("${truncate(first.token, 60)}") called ${first.count}× across Suspense boundaries`
+      -> HTTP request. Check the destination host and payload.
+  [medium] network-egress/net-fetch  vercel-optimize/lib/scanners/missing-cache-headers.mjs:13
+      'Two antipatterns: (a) GET handlers without explicit Cache-Control headers serve uncached; (b) fetch() calls with cache:"no-store" or next:{revalidate:0} opt out of caching even on cacheable upstream 
+      -> HTTP request. Check the destination host and payload.
+  [medium] network-egress/net-fetch  vercel-optimize/lib/scanners/missing-cache-headers.mjs:15
+      'For GET handlers: return a Response with Cache-Control: public, s-maxage=<seconds>, stale-while-revalidate=<window>. For fetch(): drop cache:"no-store" (use { next: { revalidate: <seconds> } } in Nex
+      -> HTTP request. Check the destination host and payload.
+  [medium] filesystem/fs-abs-write  webapp-testing/examples/console_logging.py:31
+      with open('/mnt/user-data/outputs/console.log', 'w') as f:
+      -> Writes to an absolute system path outside the project.
+  [medium] network-egress/net-xhr  xlsx/scripts/office/helpers/__init__.py:6
+      import urllib.parse
+      -> HTTP client usage.
+  [medium] network-egress/net-xhr  xlsx/scripts/office/helpers/__init__.py:32
+      target = urllib.parse.unquote(target)
+      -> HTTP client usage.
+  [medium] process-exec/exec-backtick  xlsx/scripts/recalc.py:183
+      if platform.system() == "Linux" and shutil.which("timeout"):
+      -> Possible shell command substitution.
+  [medium] process-exec/exec-backtick  xlsx/scripts/recalc.py:185
+      elif platform.system() == "Darwin" and has_gtimeout():
+      -> Possible shell command substitution.
+  [low] filesystem/fs-home  design-taste-frontend/scripts/lib/cdp.mjs:14
+      const home = process.env.HOME || process.env.USERPROFILE || '';
+      -> Resolves the home directory (check what it does there).
+  [low] secret-access/secret-token  mcp-builder/scripts/evaluation.py:315
+      python evaluation.py -t sse -u https://example.com/mcp -H "Authorization: Bearer token" eval.xml
+      -> Credential-related identifier (often benign; check if sent anywhere).
+  [low] secret-access/secret-env-enum  skill-creator/scripts/improve_description.py:33
+      env = {k: v for k, v in os.environ.items() if k != "CLAUDECODE"}
+      -> Enumerates the whole environment (possible harvest).
+  [low] secret-access/secret-env-enum  skill-creator/scripts/run_eval.py:83
+      env = {k: v for k, v in os.environ.items() if k != "CLAUDECODE"}
+      -> Enumerates the whole environment (possible harvest).
+  [info] network-egress/net-url  brainstorming/scripts/server.cjs:106
+      2 external host(s): github.com, primeradiant.com
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  design-taste-frontend/assets/charts.js:32
+      1 external host(s): www.w3.org
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  design-taste-frontend/library/photos.json:2
+      3 external host(s): nikovirtanen.com, picsum.photos, unsplash.com
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  design-taste-frontend/library/sites.json:5
+      201 external host(s): 2xa.studio, aardvarkbookclub.com, altergresources.com, anidachi.com, applied-imagination.gpc.consulting, aprilleihuanani.com, artemartemartem.com, beigeforce.com, belgrade.klmln.com, belgradearbor.rs, berd.xyz, bleibtgleich.dev, ...
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  design-taste-frontend/library/type.json:15
+      4 external host(s): api.fontshare.com, cdn.fontshare.com, fonts.googleapis.com, fonts.gstatic.com
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  design-taste-frontend/scripts/assets.mjs:33
+      12 external host(s): api.artic.edu, api.openverse.org, archive.org, collectionapi.metmuseum.org, commons.wikimedia.org, creativecommons.org, github.com, images-api.nasa.gov, images.nasa.gov, www.artic.edu, www.metmuseum.org, www.nasa.gov
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  design-taste-frontend/scripts/draw.mjs:84
+      1 external host(s): picsum.photos
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  design-taste-frontend/scripts/inspect.mjs:55
+      2 external host(s): 127.0.0.1, x
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  design-taste-frontend/scripts/lib/app-draw.mjs:131
+      2 external host(s): fonts.googleapis.com, fonts.gstatic.com
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  design-taste-frontend/scripts/scenes.mjs:37
+      2 external host(s): 127.0.0.1, x
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  diagnosing-bugs/scripts/hitl-loop.template.sh:34
+      1 external host(s): localhost
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  docx/scripts/accept_changes.py:21
+      1 external host(s): openoffice.org
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  docx/scripts/comment.py:42
+      2 external host(s): schemas.microsoft.com, schemas.openxmlformats.org
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  docx/scripts/merge_runs.py:37
+      1 external host(s): schemas.openxmlformats.org
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  docx/scripts/office/helpers/__init__.py:21
+      1 external host(s): schemas.openxmlformats.org
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  docx/scripts/office/helpers/pptx_theme.py:16
+      1 external host(s): schemas.openxmlformats.org
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  docx/scripts/office/validate.py:28
+      1 external host(s): schemas.openxmlformats.org
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  docx/scripts/office/validators/base.py:73
+      2 external host(s): schemas.openxmlformats.org, www.w3.org
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  docx/scripts/office/validators/docx.py:21
+      2 external host(s): schemas.microsoft.com, schemas.openxmlformats.org
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  docx/scripts/office/validators/pptx.py:16
+      1 external host(s): schemas.openxmlformats.org
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  docx/scripts/office/validators/redlining.py:32
+      2 external host(s): schemas.openxmlformats.org, www.w3.org
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  mcp-builder/scripts/evaluation.py:315
+      1 external host(s): example.com
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  pptx/scripts/add_slide.py:39
+      1 external host(s): schemas.openxmlformats.org
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  pptx/scripts/office/helpers/__init__.py:21
+      1 external host(s): schemas.openxmlformats.org
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  pptx/scripts/office/helpers/pptx_theme.py:16
+      1 external host(s): schemas.openxmlformats.org
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  pptx/scripts/office/validate.py:28
+      1 external host(s): schemas.openxmlformats.org
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  pptx/scripts/office/validators/base.py:73
+      2 external host(s): schemas.openxmlformats.org, www.w3.org
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  pptx/scripts/office/validators/docx.py:21
+      2 external host(s): schemas.microsoft.com, schemas.openxmlformats.org
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  pptx/scripts/office/validators/pptx.py:16
+      1 external host(s): schemas.openxmlformats.org
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  pptx/scripts/office/validators/redlining.py:32
+      2 external host(s): schemas.openxmlformats.org, www.w3.org
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  sarif-parsing/resources/sarif_helpers.py:301
+      1 external host(s): json.schemastore.org
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  semgrep/scripts/merge_sarif.py:167
+      1 external host(s): json.schemastore.org
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  semgrep/scripts/run-scans.sh:40
+      1 external host(s): ...
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  skill-creator/eval-viewer/generate_review.py:428
+      1 external host(s): localhost
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  skill-creator/scripts/generate_report.py:39
+      2 external host(s): fonts.googleapis.com, fonts.gstatic.com
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  vercel-composition-patterns/metadata.json:7
+      1 external host(s): react.dev
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  vercel-optimize/lib/gates/cwv-poor.mjs:10
+      1 external host(s): web.dev
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  vercel-optimize/lib/gates/isr-overrevalidation.mjs:9
+      1 external host(s): vercel.com
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  vercel-optimize/lib/gates/middleware-heavy.mjs:8
+      1 external host(s): nextjs.org
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-fetch  vercel-optimize/lib/grade-recommendation.mjs:6
+      const COUNT_WORDS_RE = /\b(errors?|queries|invocations|requests|reads|writes|bytes|fetch(?:es)?|calls?|hits?|misses?|seconds?|images?|deployments?|cold[- ]?starts?|users?)\b/gi;
+      -> HTTP request. Check the destination host and payload. [match sits inside a pattern/regex definition or a prose field, not a call - a detector contains the strings it hunts for]
+  [info] network-egress/net-url  vercel-optimize/lib/sanitizers/rate-limit.mjs:5
+      4 external host(s): developers.notion.com, docs.anthropic.com, docs.stripe.com, platform.openai.com
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  vercel-optimize/lib/scanners/cache-components-suspense-dedupe.mjs:28
+      1 external host(s): nextjs.org
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  vercel-optimize/lib/scanners/edge-heavy-import.mjs:40
+      1 external host(s): vercel.com
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  vercel-optimize/lib/scanners/force-dynamic.mjs:12
+      1 external host(s): nextjs.org
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  vercel-optimize/lib/scanners/headers-in-page.mjs:14
+      1 external host(s): nextjs.org
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  vercel-optimize/lib/scanners/large-static-asset.mjs:25
+      1 external host(s): vercel.com
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  vercel-optimize/lib/scanners/max-age-without-s-maxage.mjs:14
+      1 external host(s): vercel.com
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  vercel-optimize/lib/scanners/middleware-broad-matcher.mjs:12
+      1 external host(s): nextjs.org
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  vercel-optimize/lib/scanners/missing-cache-headers.mjs:17
+      2 external host(s): nextjs.org, vercel.com
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] secret-access/secret-token  vercel-optimize/lib/scanners/missing-cache-headers.mjs:33
+      const AUTH_RE = /\b(cookies\(\)|headers\(\)|getSession\(|getServerSession\(|currentUser\(|clerkClient|auth\(\)|verifyJWT|verifyToken|jwt\.verify|decode\(|Bearer\s|Authorization|supabase\.auth\.)/i;
+      -> Credential-related identifier (often benign; check if sent anywhere). [match sits inside a pattern/regex definition or a prose field, not a call - a detector contains the strings it hunts for]
+  [info] network-egress/net-url  vercel-optimize/lib/scanners/region-pin-in-config.mjs:24
+      1 external host(s): vercel.com
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  vercel-optimize/lib/scanners/source-maps-production.mjs:14
+      1 external host(s): nextjs.org
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  vercel-optimize/lib/scanners/sveltekit-prerender-missing.mjs:16
+      2 external host(s): kit.svelte.dev, vercel.com
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  vercel-optimize/lib/scanners/turbo-force-bypass.mjs:25
+      2 external host(s): turborepo.dev, vercel.com
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  vercel-optimize/lib/scanners/unoptimized-image.mjs:16
+      2 external host(s): nextjs.org, vercel.com
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  vercel-optimize/lib/scanners/use-cache-date-stamp.mjs:24
+      1 external host(s): nextjs.org
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] secret-access/secret-token  vercel-optimize/lib/vercel.mjs:365
+      .replace(/\b(Bearer)\s+[A-Za-z0-9._~+/=-]{12,}/gi, '$1 [REDACTED]')
+      -> Credential-related identifier (often benign; check if sent anywhere). [match sits inside a pattern/regex definition or a prose field, not a call - a detector contains the strings it hunts for]
+  [info] network-egress/net-url  vercel-optimize/metadata.json:7
+      2 external host(s): nextjs.org, vercel.com
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  vercel-optimize/references/docs-library.json:9
+      10 external host(s): docs.astro.build, kit.svelte.dev, nextjs.org, nuxt.com, react.dev, svelte.dev, turborepo.dev, vercel.com, web.dev, workflow-sdk.dev
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  vercel-optimize/scripts/check-citations.mjs:10
+      1 external host(s): nextjs.org
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  vercel-react-best-practices/metadata.json:7
+      5 external host(s): github.com, nextjs.org, react.dev, swr.vercel.app, vercel.com
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  vercel-react-native-skills/metadata.json:7
+      7 external host(s): docs.expo.dev, docs.swmansion.com, github.com, legendapp.com, react.dev, reactnative.dev, zeego.dev
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  vercel-react-view-transitions/metadata.json:7
+      3 external host(s): github.com, nextjs.org, react.dev
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  webapp-testing/examples/console_logging.py:5
+      1 external host(s): localhost
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  webapp-testing/examples/element_discovery.py:10
+      1 external host(s): localhost
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  xlsx/scripts/office/helpers/__init__.py:21
+      1 external host(s): schemas.openxmlformats.org
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  xlsx/scripts/office/helpers/pptx_theme.py:16
+      1 external host(s): schemas.openxmlformats.org
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  xlsx/scripts/office/validate.py:28
+      1 external host(s): schemas.openxmlformats.org
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  xlsx/scripts/office/validators/base.py:73
+      2 external host(s): schemas.openxmlformats.org, www.w3.org
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  xlsx/scripts/office/validators/docx.py:21
+      2 external host(s): schemas.microsoft.com, schemas.openxmlformats.org
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  xlsx/scripts/office/validators/pptx.py:16
+      1 external host(s): schemas.openxmlformats.org
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  xlsx/scripts/office/validators/redlining.py:32
+      2 external host(s): schemas.openxmlformats.org, www.w3.org
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+  [info] network-egress/net-url  xlsx/scripts/recalc.py:32
+      1 external host(s): openoffice.org
+      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
+## tier: static-text
+  [high] obfuscation/hidden-unicode  audit-context-building/resources/ANALYSIS_FORMAT.md:25
+      [zero-width / bidi control characters present]
+      -> Invisible characters can hide instructions or code. Inspect with a hex view.
+  [high] obfuscation/hidden-unicode  audit-context-building/resources/ANALYSIS_FORMAT.md:28
+      [zero-width / bidi control characters present]
+      -> Invisible characters can hide instructions or code. Inspect with a hex view.
+  [high] injection/md-exfil  diagnosing-superpowers/templates/bundle-README.md:64
+      Reconcile report, case, environment, findings, README and any local issue
+      -> Instructs sending local/secret data somewhere.
+  [high] injection/md-exfil  fix-security-vulnerabilities-with-strix/SKILL.md:77
+      Summarize per finding: severity, root cause, fix applied (file:line), verification result (re-scan clean / PoC no longer reproduces). Never include live secrets in the report; if a secret leaked, stat
+      -> Instructs sending local/secret data somewhere.
+  [high] injection/md-exfil  mcp-builder/reference/node_mcp_server_v2.md:175
+      - Send whatever the API requires (API key, `User-Agent`, version header) here, in one place
+      -> Instructs sending local/secret data somewhere.
+  [high] injection/md-bypass-guardrail  mcp-builder/reference/node_mcp_server_v2.md:193
+      Annotations are hints for clients, for example to auto-approve read-only tools or to confirm destructive ones. They never change how the SDK runs the tool.
+      -> Claims an action needs no approval, or names a guardrail to switch off.
+  [high] obfuscation/hidden-unicode  sharp-edges/references/lang-swift.md:96
+      [zero-width / bidi control characters present]
+      -> Invisible characters can hide instructions or code. Inspect with a hex view.
+  [high] injection/md-run-remote  vercel-react-view-transitions/README.md:35
+      npx skills add https://github.com/vercel-labs/agent-skills --skill vercel-react-view-transitions
+      -> Instructs installing/executing code from a remote/arbitrary source.
+  [medium] injection/md-skip-review  grilling/SKILL.md:28
+      Finding _facts_ is your job, never the user's. When a frontier question needs a fact from the environment (filesystem, tools, etc.), dispatch a sub-agent with a fresh context window to find it; don't 
+      -> Tells the agent not to ask the user. Often benign workflow prose ("do not ask them to install X") - read the sentence and decide.
+
+Reminder: this locates; it does not judge. Read every auto-run and flagged file by hand.

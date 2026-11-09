@@ -1,0 +1,40 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -29,7 +29,7 @@
+    human partner pick one (see Lay out the approaches).
+ 2. Write the design doc, short or full (see Size the Work).
+ 3. Get their approval of that doc.
+-4. Invoke the superpowers:writing-plans skill.
++4. Invoke the writing-plans skill.
+ 
+ If nothing is open when you write your first message and there's one
+ sensible way, steps 1 to 3 happen in that message (see Your First
+@@ -279,7 +279,7 @@
+ that comes back through this gate.
+ 
+ After the design doc is approved, the next step is the plan: invoke
+-superpowers:writing-plans and no other skill.
++writing-plans and no other skill.
+ </HARD-GATE>
+ 
+ ## Red Flags
+--- a/scripts/stop-server.sh
++++ b/scripts/stop-server.sh
+@@ -13,6 +13,8 @@
+   exit 1
+ fi
+ 
++# Toolkit: canonicalize before any writes and cleanup; /tmp/../ must not escape.
++SESSION_DIR="$(cd -- "$SESSION_DIR" 2>/dev/null && pwd -P)" || exit 1
+ STATE_DIR="${SESSION_DIR}/state"
+ PID_FILE="${STATE_DIR}/server.pid"
+ SERVER_ID_FILE="${STATE_DIR}/server-instance-id"
+@@ -110,7 +112,7 @@
+   mark_stopped "stop-server.sh"
+ 
+   # Only delete ephemeral /tmp directories
+-  if [[ "$SESSION_DIR" == /tmp/* ]]; then
++  if [[ "$SESSION_DIR" == /tmp/brainstorm-* || "$SESSION_DIR" == /private/tmp/brainstorm-* ]]; then
+     rm -rf "$SESSION_DIR"
+   fi
+ 

@@ -1,0 +1,317 @@
+[
+  {
+    "source": "https://github.com/openai/plugins",
+    "revision": "d420d13051bffe4543ed39e30fa46b87148e47dd",
+    "manifestPath": ".agents/plugins/marketplace.json",
+    "sha256": "62ed7a1c906a7e486a84ee3f2f7eba048d075e360e355072e1b0823a128f432e",
+    "marketplace": "openai-curated",
+    "plugins": [
+      {
+        "name": "linear",
+        "description": null
+      },
+      {
+        "name": "atlassian-rovo",
+        "description": null
+      },
+      {
+        "name": "google-calendar",
+        "description": null
+      },
+      {
+        "name": "gmail",
+        "description": null
+      },
+      {
+        "name": "slack",
+        "description": null
+      },
+      {
+        "name": "teams",
+        "description": null
+      },
+      {
+        "name": "sharepoint",
+        "description": null
+      },
+      {
+        "name": "outlook-email",
+        "description": null
+      },
+      {
+        "name": "outlook-calendar",
+        "description": null
+      },
+      {
+        "name": "canva",
+        "description": null
+      },
+      {
+        "name": "figma",
+        "description": null
+      },
+      {
+        "name": "stripe",
+        "description": null
+      },
+      {
+        "name": "vercel",
+        "description": null
+      },
+      {
+        "name": "game-studio",
+        "description": null
+      },
+      {
+        "name": "superpowers",
+        "description": null
+      },
+      {
+        "name": "github",
+        "description": null
+      },
+      {
+        "name": "circleci",
+        "description": null
+      },
+      {
+        "name": "google-drive",
+        "description": null
+      },
+      {
+        "name": "notion",
+        "description": null
+      },
+      {
+        "name": "cloudflare",
+        "description": null
+      },
+      {
+        "name": "sentry",
+        "description": null
+      },
+      {
+        "name": "build-ios-apps",
+        "description": null
+      },
+      {
+        "name": "build-macos-apps",
+        "description": null
+      },
+      {
+        "name": "build-web-apps",
+        "description": null
+      },
+      {
+        "name": "build-web-data-visualization",
+        "description": null
+      },
+      {
+        "name": "test-android-apps",
+        "description": null
+      },
+      {
+        "name": "life-science-research",
+        "description": null
+      },
+      {
+        "name": "zotero",
+        "description": null
+      },
+      {
+        "name": "expo",
+        "description": null
+      },
+      {
+        "name": "coderabbit",
+        "description": null
+      },
+      {
+        "name": "remotion",
+        "description": null
+      },
+      {
+        "name": "plugin-eval",
+        "description": null
+      },
+      {
+        "name": "granola",
+        "description": null
+      },
+      {
+        "name": "monday-com",
+        "description": null
+      },
+      {
+        "name": "temporal",
+        "description": null
+      },
+      {
+        "name": "hyperframes",
+        "description": null
+      },
+      {
+        "name": "supabase",
+        "description": null
+      },
+      {
+        "name": "codex-security",
+        "description": null
+      },
+      {
+        "name": "twilio-developer-kit",
+        "description": null
+      },
+      {
+        "name": "openai-developers",
+        "description": null
+      },
+      {
+        "name": "datadog",
+        "description": null
+      },
+      {
+        "name": "zoom",
+        "description": null
+      },
+      {
+        "name": "mixpanel-headless",
+        "description": null
+      },
+      {
+        "name": "airtable",
+        "description": null
+      },
+      {
+        "name": "nvidia",
+        "description": null
+      },
+      {
+        "name": "posthog",
+        "description": null
+      },
+      {
+        "name": "ngs-analysis",
+        "description": null
+      },
+      {
+        "name": "shopify",
+        "description": null
+      },
+      {
+        "name": "magicpath",
+        "description": null
+      },
+      {
+        "name": "openai-ads-conversions",
+        "description": null
+      },
+      {
+        "name": "boltz-api-cli",
+        "description": null
+      },
+      {
+        "name": "dropbox",
+        "description": null
+      },
+      {
+        "name": "product-design",
+        "description": null
+      },
+      {
+        "name": "data-analytics",
+        "description": null
+      },
+      {
+        "name": "creative-production",
+        "description": null
+      },
+      {
+        "name": "public-equity-investing",
+        "description": null
+      },
+      {
+        "name": "adobe",
+        "description": null
+      },
+      {
+        "name": "lovable",
+        "description": null
+      },
+      {
+        "name": "clickup",
+        "description": null
+      },
+      {
+        "name": "consensus",
+        "description": null
+      },
+      {
+        "name": "chatcut",
+        "description": null
+      },
+      {
+        "name": "higgsfield",
+        "description": null
+      },
+      {
+        "name": "crowdstrike-falcon-foundry",
+        "description": null
+      },
+      {
+        "name": "crowdstrike-falcon-fusion",
+        "description": null
+      },
+      {
+        "name": "qodo",
+        "description": null
+      }
+    ],
+    "status": "catalog-only",
+    "license": "Not redistributed; verify per-plugin license before downloading",
+    "compatibility": [
+      "codex"
+    ],
+    "review": "Metadata only; plugin code, hooks, integrations and OAuth not audited or enabled."
+  },
+  {
+    "source": "https://github.com/addyosmani/agent-skills",
+    "revision": "301b02b12bff98e4688e6984af6556802322bbde",
+    "manifestPath": ".agents/plugins/marketplace.json",
+    "sha256": "50066d5e3ca127bcd01544453b4721700dabc64bddaba58c7a5ff9d4d60540ee",
+    "marketplace": "agent-skills",
+    "plugins": [
+      {
+        "name": "agent-skills",
+        "description": "Production-grade engineering skills covering every phase of software development: spec, plan, build, verify, review, and ship."
+      }
+    ],
+    "status": "catalog-only",
+    "license": "Not redistributed; verify per-plugin license before downloading",
+    "compatibility": [
+      "claude",
+      "codex"
+    ],
+    "review": "Metadata only; plugin code, hooks, integrations and OAuth not audited or enabled."
+  },
+  {
+    "source": "https://github.com/addyosmani/agent-skills",
+    "revision": "301b02b12bff98e4688e6984af6556802322bbde",
+    "manifestPath": ".claude-plugin/marketplace.json",
+    "sha256": "d7b6e6f5a10e9bc8c77a21e44652b813256e30663ca667cc2aee8ecf81ff313a",
+    "marketplace": "addy-agent-skills",
+    "plugins": [
+      {
+        "name": "agent-skills",
+        "description": "Production-grade engineering skills covering every phase of software development: spec, plan, build, verify, review, and ship."
+      }
+    ],
+    "status": "catalog-only",
+    "license": "Not redistributed; verify per-plugin license before downloading",
+    "compatibility": [
+      "claude",
+      "codex"
+    ],
+    "review": "Metadata only; plugin code, hooks, integrations and OAuth not audited or enabled."
+  }
+]
