@@ -65,7 +65,7 @@ Findings: 194  (high:85, medium:32, low:4, info:73)
       "idea": "A video editor presented as a bunch of collectable objects: 3D keychain charms in the hero and squircle effect tiles that behave like app icons everywhere else.",
       -> Accesses the OS credential store.
   [high] secret-access/secret-keychain  design-taste-frontend/library/sites.json:2673
-      "hero": "Soft grey vertical gradient, darker at the top, fading to near-white. Two floating light-grey rounded capsules form the nav: the left holds the script logo, five links and a kebab; the right 
+      "hero": "Soft grey vertical gradient, darker at the top, fading to near-white. Two floating light-grey rounded capsules form the nav: the left holds the script logo, five links and a kebab; the right
       -> Accesses the OS credential store.
   [high] network-egress/net-curl  design-taste-frontend/library/sites.json:8205
       "imagery": "Untouched magazine cover photography in the true 3:4 ratio, square corners, no filter, rendered as WebGL paper planes that curl in flight and unroll flat when they land. A full-screen film
@@ -311,7 +311,7 @@ Findings: 194  (high:85, medium:32, low:4, info:73)
       ? `fetch("${truncate(first.token, 60)}") called ${first.count}× across Suspense boundaries`
       -> HTTP request. Check the destination host and payload.
   [medium] network-egress/net-fetch  vercel-optimize/lib/scanners/missing-cache-headers.mjs:13
-      'Two antipatterns: (a) GET handlers without explicit Cache-Control headers serve uncached; (b) fetch() calls with cache:"no-store" or next:{revalidate:0} opt out of caching even on cacheable upstream 
+      'Two antipatterns: (a) GET handlers without explicit Cache-Control headers serve uncached; (b) fetch() calls with cache:"no-store" or next:{revalidate:0} opt out of caching even on cacheable upstream
       -> HTTP request. Check the destination host and payload.
   [medium] network-egress/net-fetch  vercel-optimize/lib/scanners/missing-cache-headers.mjs:15
       'For GET handlers: return a Response with Cache-Control: public, s-maxage=<seconds>, stale-while-revalidate=<window>. For fetch(): drop cache:"no-store" (use { next: { revalidate: <seconds> } } in Nex
@@ -588,7 +588,7 @@ Findings: 194  (high:85, medium:32, low:4, info:73)
       npx skills add https://github.com/vercel-labs/agent-skills --skill vercel-react-view-transitions
       -> Instructs installing/executing code from a remote/arbitrary source.
   [medium] injection/md-skip-review  grilling/SKILL.md:28
-      Finding _facts_ is your job, never the user's. When a frontier question needs a fact from the environment (filesystem, tools, etc.), dispatch a sub-agent with a fresh context window to find it; don't 
+      Finding _facts_ is your job, never the user's. When a frontier question needs a fact from the environment (filesystem, tools, etc.), dispatch a sub-agent with a fresh context window to find it; don't
       -> Tells the agent not to ask the user. Often benign workflow prose ("do not ask them to install X") - read the sentence and decide.
 
 Reminder: this locates; it does not judge. Read every auto-run and flagged file by hand.
