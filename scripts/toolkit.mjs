@@ -79,9 +79,9 @@ export function checkRepository() {
     }
   }
   for (const [profile, ids] of Object.entries(data.profiles)) {
-    if (!['core', 'aihero', 'superpowers'].includes(profile) || ids.some((id) => !names.has(id))) fail(`Profile sai: ${profile}`);
+    if (!['core', 'aihero'].includes(profile) || ids.some((id) => !names.has(id))) fail(`Profile sai: ${profile}`);
   }
-  for (const profile of ['core', 'aihero', 'superpowers']) if (!Array.isArray(data.profiles[profile]) || !data.profiles[profile].length) fail(`Thiếu profile: ${profile}`);
+  for (const profile of ['core', 'aihero']) if (!Array.isArray(data.profiles[profile]) || !data.profiles[profile].length) fail(`Thiếu profile: ${profile}`);
   for (const skill of data.skills) if (skill.patch && !fs.existsSync(path.join(ROOT, safeRelative(skill.patch)))) fail(`Thiếu patch: ${skill.id}`);
   for (const [pack, ids] of Object.entries(data.packs)) {
     if (ids.some((id) => !names.has(id))) fail(`Pack sai: ${pack}`);
@@ -104,7 +104,7 @@ function canonicalTarget(input) {
 }
 
 function validateOptions(options, data) {
-  if (!['aihero', 'superpowers'].includes(options.workflow)) fail('Chọn --workflow aihero|superpowers (chỉ một).');
+  if (options.workflow !== 'aihero') fail('Workflow được hỗ trợ: --workflow aihero.');
   if (!['local', 'github'].includes(options.tracker)) fail('Chọn --tracker local|github.');
   if (!['claude', 'codex', 'both'].includes(options.agent)) fail('Chọn --agent claude|codex|both.');
   for (const pack of options.packs) if (!Object.hasOwn(data.packs, pack)) fail(`Pack không tồn tại: ${pack}`);
@@ -152,9 +152,7 @@ function planFiles(options, data) {
     : `Đích GitHub: ${options.githubRepo}. Spec/ticket dùng GitHub Issues; bản nháp ở docs/specs/ và docs/tickets/. Trước lần publish phải có yêu cầu cụ thể của người dùng. Dùng gh CLI hoặc connector GitHub đã xác thực; nếu thiếu, báo not configured và giữ bản nháp local.`;
   add('docs/agents/issue-tracker.md', `# Issue tracker\n\n${tracking}\n\nSetup không tạo Issues, labels hay bình luận. PRs không phải request surface mặc định.\n`);
   add('docs/agents/domain.md', '# Domain documents\n\nDùng glossary và ADR hiện có của dự án. Nếu chưa có, chỉ tạo GLOSSARY.md hoặc docs/adr/ khi phát sinh thuật ngữ/quyết định thật; không suy diễn nghiệp vụ từ project khác.\n');
-  const workflow = options.workflow === 'aihero'
-    ? 'Bắt đầu bằng ai-dev; flow: grill-with-docs → to-spec → to-tickets → implement → code-review. Debug bằng diagnosing-bugs; dùng tdd ở hành vi cần kiểm tra. Tracker và domain docs đã được CLI cấu hình; không cần chạy setup-matt-pocock-skills lần nữa.'
-    : 'Dùng using-superpowers để chọn skill trong profile: brainstorming → writing-plans → executing-plans; systematic-debugging cho bug; verification-before-completion trước khi báo xong. Tên skill standalone không có tiền tố superpowers:. Agent prompt code-reviewer dùng requesting-code-review/code-reviewer.md. Chỉ dùng subagent khi công cụ hỗ trợ và người dùng chọn cách thực thi đó; nếu không, dùng executing-plans. Không tự cài plugin Superpowers lần nữa.';
+  const workflow = 'Bắt đầu bằng ai-dev; flow: grill-with-docs → to-spec → to-tickets → implement → code-review. Debug bằng diagnosing-bugs; dùng tdd ở hành vi cần kiểm tra. Tracker và domain docs đã được CLI cấu hình; không cần chạy setup-matt-pocock-skills lần nữa.';
   add('docs/agents/toolkit.md', `# Toolkit của dự án\n\n${workflow}\n\nSkill đã cài: ${skills.map((skill) => skill.id).join(', ')}.\n\nSpec/kế hoạch local: docs/specs/, docs/plans/; ticket theo issue-tracker.md. Đây là lựa chọn đường dẫn của dự án, thay thế mặc định upstream. Ưu tiên chỉ dẫn người dùng hơn skill. Không tự sửa global config, bật hook, publish, pentest, deploy hoặc cross-review.\n\nMCP: ${options.mcps.join(', ')}. Cấu hình không chứng minh đã kết nối; xác minh trong phiên Claude/Codex và xác thực dịch vụ khi cần. Không ghi token vào file.\n\nReview và nguồn: xem snapshots trong .ai-toolkit/provenance.json; các script vendored chỉ được rà soát tĩnh, chưa được chạy thử. Phần tài liệu cần LibreOffice/Python và dependency riêng, không tự cài chúng.\n`);
   add('.ai-toolkit/provenance.json', json(skills));
   const servers = Object.fromEntries(options.mcps.map((id) => [id, data.mcp[id].claude]));
@@ -236,14 +234,6 @@ export function apply(rawOptions) {
     if (owned && current?.fingerprint !== owned) fail(`Xung đột file toolkit đã sửa/xóa: ${relative}. Hợp nhất thủ công trước khi chạy lại.`);
     if (!owned && current) fail(`Xung đột file người dùng: ${relative}. Hợp nhất thủ công; toolkit chưa ghi file nào.`);
   }
-  const other = options.workflow === 'aihero' ? 'superpowers' : 'aihero';
-  for (const id of data.profiles[other]) {
-    if (data.profiles[options.workflow].includes(id)) continue;
-    for (const relative of [`.agents/skills/${id}/SKILL.md`, `.claude/skills/${id}`]) {
-      noSymlinkParents(target, relative);
-      if (fs.existsSync(path.join(target, relative)) && !old?.files[relative]) fail(`Workflow khác đã tồn tại: ${relative}. Gỡ bản cài riêng trước khi apply.`);
-    }
-  }
   const state = { version: 1, options, files: Object.fromEntries([...plan].map(([relative, entry]) => [relative, entry.fingerprint])) };
   plan.set(STATE, fileEntry(json(state)));
   const changes = [...all].filter((relative) => before.get(relative)?.fingerprint !== plan.get(relative)?.fingerprint);
@@ -281,14 +271,6 @@ export function checkTarget(input) {
   if (!state) fail('Target chưa được setup.');
   const data = manifest();
   validateOptions(state.options, data);
-  const other = state.options.workflow === 'aihero' ? 'superpowers' : 'aihero';
-  for (const id of data.profiles[other]) {
-    if (data.profiles[state.options.workflow].includes(id)) continue;
-    for (const relative of [`.agents/skills/${id}/SKILL.md`, `.claude/skills/${id}`]) {
-      noSymlinkParents(target, relative);
-      if (fs.existsSync(path.join(target, relative))) fail(`Workflow khác đã tồn tại: ${relative}`);
-    }
-  }
   const expected = planFiles(state.options, data);
   if (JSON.stringify(Object.keys(state.files).sort()) !== JSON.stringify([...expected.keys()].sort())) fail('Ownership inventory không khớp với profile.');
   for (const [relative, fingerprint] of Object.entries(state.files)) {
@@ -313,7 +295,7 @@ function main() {
   }
   const command = positionals[0];
   if (values.help || !command) {
-    console.log('Node 24+. catalog [--json] | check [--target DIR] | apply --target DIR --workflow aihero|superpowers --tracker local|github [--github-repo owner/repo] [--agent both|claude|codex] [--pack NAME] [--mcp playwright|github] [--dry-run]');
+    console.log('Node 24+. catalog [--json] | check [--target DIR] | apply --target DIR --workflow aihero --tracker local|github [--github-repo owner/repo] [--agent both|claude|codex] [--pack NAME] [--mcp playwright|github] [--dry-run]');
     return;
   }
   if (positionals.length !== 1) fail('Chỉ truyền một command.');
@@ -321,7 +303,7 @@ function main() {
     const data = manifest();
     if (values.json) console.log(json(data));
     else {
-      console.log('Workflow: aihero | superpowers\nCore: ' + data.profiles.core.join(', '));
+      console.log('Workflow: aihero\nCore: ' + data.profiles.core.join(', '));
       for (const [pack, skills] of Object.entries(data.packs)) console.log(`${pack}: ${skills.join(', ')}`);
       console.log('MCP: ' + Object.keys(data.mcp).join(', ') + '\nPlugin: xem catalog/plugins.json và docs/plugins.md');
     }

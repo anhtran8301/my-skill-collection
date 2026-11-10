@@ -4,7 +4,7 @@ MIT của toolkit chỉ áp dụng mã/tài liệu do repo này viết. Tài ngu
 
 | Tác giả/nguồn | Giấy phép của snapshot đã nhập |
 |---|---|
-| Matt Pocock, obra/Jesse Vincent, Dietrich Gebert, sanyuan0704, Leonxlnx, Upstash | MIT |
+| Matt Pocock, Dietrich Gebert, sanyuan0704, Leonxlnx, Upstash | MIT |
 | Vercel Labs | MIT, khai báo tại README upstream; upstream revision không kèm toàn văn LICENSE |
 | Trail of Bits | CC-BY-SA-4.0; giữ attribution và ShareAlike cho bản phái sinh |
 | Anthropic, Strix | Apache-2.0; giữ license và third-party notices được cung cấp |

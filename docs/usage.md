@@ -2,7 +2,7 @@
 
 `--target` có thể là thư mục chưa tồn tại hoặc repo đang có; đường dẫn có khoảng trắng cần được quote. Không chọn home, root hoặc thư mục chứa chính toolkit làm target. Đường dẫn được canonicalize để hoạt động đúng với `/tmp` và `/private/tmp` trên macOS.
 
-Mỗi lần setup chọn lại đủ workflow, tracker, agent, packs và MCP. Lần apply sau coi lựa chọn mới là bộ mong muốn; pack không còn được chọn sẽ bị gỡ những file thuộc toolkit. File thêm riêng trong thư mục skill vẫn được giữ. Không chạy nhiều apply đồng thời vào cùng target.
+Mỗi lần setup chọn AI Hero cùng tracker, agent, packs và MCP. Lần apply sau coi lựa chọn mới là bộ mong muốn; pack không còn được chọn sẽ bị gỡ những file thuộc toolkit. File thêm riêng trong thư mục skill vẫn được giữ. Không chạy nhiều apply đồng thời vào cùng target.
 
 ## Repo có cấu hình AI riêng
 
@@ -21,8 +21,10 @@ Giữ bản sửa của bạn, dùng project tạm để xem bản mới, rồi 
 
 Nếu một lần ghi gặp lỗi, CLI cố gắng rollback các file đã thay đổi và ghi rõ khi rollback cũng lỗi. Thư mục rỗng có thể còn lại; không xóa thư mục chứa file người dùng. `check --target` phát hiện file thiếu, bị sửa, inventory sai hoặc snapshot cần cập nhật.
 
-## Giới hạn profile
+## Workflow và cấu hình ngoài toolkit
 
-CLI chặn profile đối nghịch đã có trong các vị trí skill project. Không đọc/sửa global skills hoặc plugin đã cài trên máy. Trước khi dùng, xem danh sách skill trong agent và tránh bản cài global/plugin trùng tên. Tên `superpowers:` từ ví dụ upstream ánh xạ sang tên skill standalone trong profile; không cần cài plugin Superpowers cùng lúc.
+AI Hero là workflow duy nhất được hỗ trợ. Không đọc/sửa global skills hoặc plugin đã cài trên máy. Trước khi dùng, xem danh sách skill trong agent và tránh bản cài global/plugin trùng tên.
+
+Nếu một project đã được cài workflow cũ bằng toolkit, chạy lại apply với `--workflow aihero` và các pack mong muốn. CLI kiểm tra checksum trước khi gỡ file cũ thuộc toolkit; file bạn đã sửa sẽ gây xung đột để hợp nhất thủ công. Bản cài ngoài toolkit do bạn tự quản lý.
 
 Claude-only vẫn dùng `.agents/skills` làm kho vật lý; `--agent` chỉ chọn cấu hình và alias. Không diễn giải `check` thành bảo đảm model đã nạp đúng hoặc dịch vụ đã xác thực.

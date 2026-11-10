@@ -16,6 +16,6 @@ Checksum tính theo tên file, SHA-256 nội dung và executable bit, thứ tự
 node --input-type=module -e 'import {treeHash} from "./scripts/toolkit.mjs"; console.log(treeHash(process.argv[1]))' vendor/skills/ten-skill
 ```
 
-Profile `core`, `aihero`, `superpowers` và các pack là danh sách ID trong manifest. Dependency sang skill cùng bộ phải được giữ đầy đủ trong profile; `check` xác minh các link cụ thể từ SKILL.md. Các đường dẫn ví dụ/dynamic trong prompt không thể được kiểm tra tĩnh hoàn toàn: xem diff và thử đóng gói một project tạm khi thêm nguồn mới.
+Profile `core`, `aihero` và các pack là danh sách ID trong manifest. Dependency sang skill cùng bộ phải được giữ đầy đủ trong profile; `check` xác minh các link cụ thể từ SKILL.md. Các đường dẫn ví dụ/dynamic trong prompt không thể được kiểm tra tĩnh hoàn toàn: xem diff và thử đóng gói một project tạm khi thêm nguồn mới.
 
 Sau khi cập nhật kho, project đích chỉ được cập nhật khi bạn chạy lại apply. File đã sửa thủ công sẽ bị chặn theo checksum; không thay hash ownership để bỏ qua khác biệt.

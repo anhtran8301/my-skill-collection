@@ -15,7 +15,6 @@ MCP được tạo khi apply: Context7 HTTP mặc định; Playwright và GitHub
 | Nhóm | Khả năng và giới hạn |
 |---|---|
 | Core/AI Hero | Chủ yếu Markdown; script template debug tạo tiến trình khi người dùng dùng tiện ích đó. Code review có thể đề nghị subagents; dùng cách thực thi được người dùng chọn, hoặc review tuần tự khi thiếu công cụ. |
-| Superpowers | Có companion HTTP/WebSocket, mở trình duyệt, cleanup session, render Graphviz; chỉ dùng companion khi được yêu cầu. Không đưa shell launcher từ nguồn không tin cậy vào `BRAINSTORM_OPEN_CMD`. Skill chẩn đoán có thể thu thập thông tin môi trường: luôn giữ giới hạn secret và phạm vi export trong hướng dẫn dự án. |
 | Frontend | Taste v2 tải public asset từ Openverse/Wikimedia/Art Institute/Met/Archive/NASA và chạy Chrome/CDP trong profile tạm, phục vụ loopback. Ảnh/font/CDN xuất hiện trong output có thể gửi request từ trình duyệt. Kiểm tra license ảnh từng lần sử dụng. Các từ curl/keychain trong library JSON là mô tả hình ảnh, không truy cập credential. |
 | Review | Prompt review và tối giản code; không tự cài hoặc chạy công cụ. |
 | Security | Semgrep/CodeQL/SARIF scripts gọi CLI, có thể tải rule repo và xóa output cũ trong thư mục riêng. Strix có thể gửi source lên dịch vụ cloud hoặc chạy pentest nếu được yêu cầu; cài pack không cho phép upload/scan. Không dùng output directory chứa dữ liệu khác. |
@@ -29,8 +28,6 @@ Diff so với upstream nằm trong `catalog/patches/` và được manifest tr�
 
 - DOCX/PPTX/XLSX: bỏ cơ chế GCC/LD_PRELOAD dùng thư viện `/tmp/lo_socket_shim.so`; giữ môi trường `svp` và profile riêng cho mỗi lần `run_soffice`. Nếu môi trường chặn LibreOffice, báo lỗi thay vì dùng shim.
 - Skill creator: bỏ hàm dừng tiến trình đang chiếm cổng; viewer chuyển sang cổng trống và chỉ listen loopback.
-- Superpowers stop-server: canonicalize session path; cleanup đệ quy chỉ cho thư mục session có tiền tố brainstorm trong temp. Các thư mục session khác được giữ lại.
-- Superpowers standalone: bỏ namespace `superpowers:` tại entrypoint; kèm agent prompt code-reviewer để tránh phụ thuộc marketplace. Các tham chiếu còn lại dạng namespace là chỉ dẫn upstream; đọc hướng dẫn toolkit để ánh xạ sang tên standalone.
 - `ai-dev` là flow tổng quát viết lại từ MDM; không mang lệnh build, URL dịch vụ, contract hoặc quy tắc tenant của MDM.
 - AI Hero to-spec/to-tickets/code-review: đọc tracker đã được CLI cấu hình thay vì đòi setup lại; labels là tùy chọn và không tự tạo remote labels. Review có đường chạy tuần tự khi không dùng subagent.
 
@@ -42,4 +39,4 @@ Mỗi skill giữ LICENSE upstream hoặc thông báo license. Vercel khai báo 
 
 Không rà soát mã thực thi của MCP server, dependency pip/npm, LibreOffice/browser, CLI bên ngoài, rule repo tải về sau này, hoặc mã plugin OpenAI/Addy. Hai bộ plugin chỉ có metadata trong catalog, chưa cài, chưa đăng nhập và chưa được bật. Không có transcript hay opaque binary trong snapshot được nhập; ảnh/video remote chưa được tải. Các tool-specific lệnh trong skill upstream vẫn cần kiểm tra tương thích với phiên bản agent đang dùng.
 
-Không kết luận toàn bộ 831 file vendored đã được audit từng dòng. Phạm vi là inventory, entrypoint, giấy phép và các file/vùng được scanner đánh dấu, kèm các bản sửa nêu trên; ai-dev được viết và kiểm tra riêng. Chưa kiểm thử hành vi skill trên Claude/Codex thực tế; test của repo chỉ kiểm chứng việc đóng gói và setup.
+Không kết luận toàn bộ 736 file vendored đã được audit từng dòng. Phạm vi là inventory, entrypoint, giấy phép và các file/vùng được scanner đánh dấu, kèm các bản sửa nêu trên; ai-dev được viết và kiểm tra riêng. Chưa kiểm thử hành vi skill trên Claude/Codex thực tế; test của repo chỉ kiểm chứng việc đóng gói và setup.

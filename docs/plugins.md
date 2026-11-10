@@ -24,7 +24,7 @@ Trong phiên Claude Code, các lệnh chính thức từ upstream:
 /plugin install agent-skills@addy-agent-skills
 ```
 
-Bộ Addy bao phủ cả workflow, có thể trùng AI Hero/Superpowers; không cài/bật toàn bộ cùng profile đang dùng nếu chưa chọn lại workflow. Repo này chỉ lưu metadata của bộ đó. Khi lấy riêng một skill, giữ các shared references mà nó sử dụng; upstream ghi rõ việc copy riêng thư mục skill có thể thiếu tài liệu.
+Bộ Addy bao phủ cả workflow, có thể trùng AI Hero; không cài/bật toàn bộ cùng profile đang dùng nếu chưa chọn lại workflow. Repo này chỉ lưu metadata của bộ đó. Khi lấy riêng một skill, giữ các shared references mà nó sử dụng; upstream ghi rõ việc copy riêng thư mục skill có thể thiếu tài liệu.
 
 OAuth/đăng nhập, scope GitHub/Figma/Notion và các dịch vụ khác thực hiện trong agent/plugin tương ứng. Toolkit không thực hiện các bước đó và không thay đổi global plugin settings.
 

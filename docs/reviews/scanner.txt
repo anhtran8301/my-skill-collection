@@ -1,24 +1,12 @@
 # skill-security-review scan: vendor/skills
 
-Files: 831  (code 203, markdown 403, config 37, trace 0, vendored 0, binary 0, asset 188)
-Executable surface: 203 script(s)
+Files: 736  (code 190, markdown 338, config 37, trace 0, vendored 0, binary 0, asset 171)
+Executable surface: 190 script(s)
 Declared allowed-tools: Workflow Task Read Grep Glob
 Auto-run entrypoints: none detected
-Findings: 194  (high:85, medium:32, low:4, info:73)
+Findings: 183  (high:77, medium:30, low:4, info:72)
 
 ## tier: on-demand
-  [high] process-exec/exec-child_process  brainstorming/scripts/server.cjs:537
-      const cp = require('child_process');
-      -> Node process execution module.
-  [high] filesystem/fs-destructive  brainstorming/scripts/server.cjs:604
-      if (fs.existsSync(eventsFile)) fs.unlinkSync(eventsFile);
-      -> Deletes files/dirs.
-  [high] filesystem/fs-destructive  brainstorming/scripts/server.cjs:619
-      if (fs.existsSync(infoFile)) fs.unlinkSync(infoFile);
-      -> Deletes files/dirs.
-  [high] filesystem/fs-destructive  brainstorming/scripts/stop-server.sh:116
-      rm -rf "$SESSION_DIR"
-      -> Deletes files/dirs.
   [high] process-exec/exec-py  codeql/scripts/test_build_log.py:16
       def _bash(script: str, cwd: Path) -> subprocess.CompletedProcess[str]:
       -> Python subprocess execution.
@@ -202,15 +190,6 @@ Findings: 194  (high:85, medium:32, low:4, info:73)
   [high] process-exec/exec-py  webapp-testing/scripts/with_server.py:98
       except subprocess.TimeoutExpired:
       -> Python subprocess execution.
-  [high] process-exec/exec-child_process  writing-skills/render-graphs.js:18
-      import { execFileSync } from 'child_process';
-      -> Node process execution module.
-  [high] process-exec/exec-call  writing-skills/render-graphs.js:72
-      return execFileSync('dot', ['-Tsvg'], {
-      -> Runs a subprocess. NOTE: bare .exec( on a variable is usually a regex - verify.
-  [high] process-exec/exec-call  writing-skills/render-graphs.js:113
-      execFileSync('dot', ['-V'], { stdio: 'ignore' });
-      -> Runs a subprocess. NOTE: bare .exec( on a variable is usually a regex - verify.
   [high] process-exec/exec-py  xlsx/scripts/office/soffice.py:21
       return subprocess.run(["soffice"] + args, env=get_soffice_env(), **kwargs)
       -> Python subprocess execution.
@@ -238,12 +217,6 @@ Findings: 194  (high:85, medium:32, low:4, info:73)
   [high] process-exec/exec-py  xlsx/scripts/recalc.py:194
       except subprocess.TimeoutExpired:
       -> Python subprocess execution.
-  [medium] network-egress/net-ws  brainstorming/scripts/helper.js:80
-      ws = new WebSocket(websocketUrl());
-      -> Opens a socket/websocket connection.
-  [medium] network-egress/net-http-import  brainstorming/scripts/server.cjs:2
-      const http = require('http');
-      -> Imports a network module.
   [medium] process-exec/exec-backtick  codeql/scripts/test_generation_scripts.py:171
       'exec python3 "$@"\n'
       -> Possible shell command substitution.
@@ -343,9 +316,6 @@ Findings: 194  (high:85, medium:32, low:4, info:73)
   [low] secret-access/secret-env-enum  skill-creator/scripts/run_eval.py:83
       env = {k: v for k, v in os.environ.items() if k != "CLAUDECODE"}
       -> Enumerates the whole environment (possible harvest).
-  [info] network-egress/net-url  brainstorming/scripts/server.cjs:106
-      2 external host(s): github.com, primeradiant.com
-      -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
   [info] network-egress/net-url  design-taste-frontend/assets/charts.js:32
       1 external host(s): www.w3.org
       -> External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.
@@ -569,9 +539,6 @@ Findings: 194  (high:85, medium:32, low:4, info:73)
   [high] obfuscation/hidden-unicode  audit-context-building/resources/ANALYSIS_FORMAT.md:28
       [zero-width / bidi control characters present]
       -> Invisible characters can hide instructions or code. Inspect with a hex view.
-  [high] injection/md-exfil  diagnosing-superpowers/templates/bundle-README.md:64
-      Reconcile report, case, environment, findings, README and any local issue
-      -> Instructs sending local/secret data somewhere.
   [high] injection/md-exfil  fix-security-vulnerabilities-with-strix/SKILL.md:77
       Summarize per finding: severity, root cause, fix applied (file:line), verification result (re-scan clean / PoC no longer reproduces). Never include live secrets in the report; if a secret leaked, stat
       -> Instructs sending local/secret data somewhere.

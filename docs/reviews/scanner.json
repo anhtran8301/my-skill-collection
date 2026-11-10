@@ -2,86 +2,42 @@
   "target": "vendor/skills",
   "root": "vendor/skills",
   "summary": {
-    "files": 831,
+    "files": 736,
     "byKind": {
-      "code": 203,
-      "markdown": 403,
+      "code": 190,
+      "markdown": 338,
       "config": 37,
       "trace": 0,
-      "asset": 188,
+      "asset": 171,
       "vendored": 0,
       "binary": 0
     },
     "hasCode": true,
     "executableSurface": [
-      "203 script(s)"
+      "190 script(s)"
     ],
     "declaredTools": "Workflow Task Read Grep Glob",
     "autoRunEntrypoints": [],
     "symlinksFollowed": 0,
     "symlinksEscaping": 0,
-    "findings": 194,
+    "findings": 183,
     "bySeverity": {
-      "high": 85,
-      "medium": 32,
+      "high": 77,
+      "medium": 30,
       "low": 4,
-      "info": 73
+      "info": 72
     },
     "byCategory": {
-      "process-exec": 67,
-      "filesystem": 14,
-      "network-egress": 95,
+      "process-exec": 63,
+      "network-egress": 92,
       "secret-access": 8,
+      "filesystem": 11,
       "dynamic-code": 1,
       "obfuscation": 3,
-      "injection": 6
+      "injection": 5
     }
   },
   "findings": [
-    {
-      "file": "brainstorming/scripts/server.cjs",
-      "line": 537,
-      "rule": "exec-child_process",
-      "category": "process-exec",
-      "severity": "high",
-      "snippet": "const cp = require('child_process');",
-      "note": "Node process execution module.",
-      "tier": "on-demand",
-      "assessment": "Opt-in companion HTTP/WebSocket server; browser launcher may use operator-provided BRAINSTORM_OPEN_CMD. Do not set that variable from untrusted input. Default is loopback; do not expose it publicly."
-    },
-    {
-      "file": "brainstorming/scripts/server.cjs",
-      "line": 604,
-      "rule": "fs-destructive",
-      "category": "filesystem",
-      "severity": "high",
-      "snippet": "if (fs.existsSync(eventsFile)) fs.unlinkSync(eventsFile);",
-      "note": "Deletes files/dirs.",
-      "tier": "on-demand",
-      "assessment": "Opt-in companion HTTP/WebSocket server; browser launcher may use operator-provided BRAINSTORM_OPEN_CMD. Do not set that variable from untrusted input. Default is loopback; do not expose it publicly."
-    },
-    {
-      "file": "brainstorming/scripts/server.cjs",
-      "line": 619,
-      "rule": "fs-destructive",
-      "category": "filesystem",
-      "severity": "high",
-      "snippet": "if (fs.existsSync(infoFile)) fs.unlinkSync(infoFile);",
-      "note": "Deletes files/dirs.",
-      "tier": "on-demand",
-      "assessment": "Opt-in companion HTTP/WebSocket server; browser launcher may use operator-provided BRAINSTORM_OPEN_CMD. Do not set that variable from untrusted input. Default is loopback; do not expose it publicly."
-    },
-    {
-      "file": "brainstorming/scripts/stop-server.sh",
-      "line": 116,
-      "rule": "fs-destructive",
-      "category": "filesystem",
-      "severity": "high",
-      "snippet": "rm -rf \"$SESSION_DIR\"",
-      "note": "Deletes files/dirs.",
-      "tier": "on-demand",
-      "assessment": "Canonical path and cleanup prefix hardened in local patch; PID checked against session instance before signaling."
-    },
     {
       "file": "codeql/scripts/test_build_log.py",
       "line": 16,
@@ -754,39 +710,6 @@
       "assessment": "Runs the explicitly supplied server shell command, then the supplied test argv; not a safe wrapper for untrusted commands. No execution during import/setup."
     },
     {
-      "file": "writing-skills/render-graphs.js",
-      "line": 18,
-      "rule": "exec-child_process",
-      "category": "process-exec",
-      "severity": "high",
-      "snippet": "import { execFileSync } from 'child_process';",
-      "note": "Node process execution module.",
-      "tier": "on-demand",
-      "assessment": "Runs local Graphviz dot with argument arrays and DOT on stdin; only when rendering is requested."
-    },
-    {
-      "file": "writing-skills/render-graphs.js",
-      "line": 72,
-      "rule": "exec-call",
-      "category": "process-exec",
-      "severity": "high",
-      "snippet": "return execFileSync('dot', ['-Tsvg'], {",
-      "note": "Runs a subprocess. NOTE: bare .exec( on a variable is usually a regex - verify.",
-      "tier": "on-demand",
-      "assessment": "Runs local Graphviz dot with argument arrays and DOT on stdin; only when rendering is requested."
-    },
-    {
-      "file": "writing-skills/render-graphs.js",
-      "line": 113,
-      "rule": "exec-call",
-      "category": "process-exec",
-      "severity": "high",
-      "snippet": "execFileSync('dot', ['-V'], { stdio: 'ignore' });",
-      "note": "Runs a subprocess. NOTE: bare .exec( on a variable is usually a regex - verify.",
-      "tier": "on-demand",
-      "assessment": "Runs local Graphviz dot with argument arrays and DOT on stdin; only when rendering is requested."
-    },
-    {
       "file": "xlsx/scripts/office/soffice.py",
       "line": 21,
       "rule": "exec-py",
@@ -884,28 +807,6 @@
       "note": "Python subprocess execution.",
       "tier": "on-demand",
       "assessment": "On-demand LibreOffice formula recalculation; may create a Basic macro in the LibreOffice profile. No execution during import."
-    },
-    {
-      "file": "brainstorming/scripts/helper.js",
-      "line": 80,
-      "rule": "net-ws",
-      "category": "network-egress",
-      "severity": "medium",
-      "snippet": "ws = new WebSocket(websocketUrl());",
-      "note": "Opens a socket/websocket connection.",
-      "tier": "on-demand",
-      "assessment": "Static example/reference or on-demand capability; reviewed at the flagged context, not executed. Runtime dependencies and remote services are not audited."
-    },
-    {
-      "file": "brainstorming/scripts/server.cjs",
-      "line": 2,
-      "rule": "net-http-import",
-      "category": "network-egress",
-      "severity": "medium",
-      "snippet": "const http = require('http');",
-      "note": "Imports a network module.",
-      "tier": "on-demand",
-      "assessment": "Opt-in companion HTTP/WebSocket server; browser launcher may use operator-provided BRAINSTORM_OPEN_CMD. Do not set that variable from untrusted input. Default is loopback; do not expose it publicly."
     },
     {
       "file": "codeql/scripts/test_generation_scripts.py",
@@ -1269,17 +1170,6 @@
       "note": "Enumerates the whole environment (possible harvest).",
       "tier": "on-demand",
       "assessment": "Invokes claude -p, writes temporary command into the evaluation project and passes inherited environment to the child. Requires explicit eval request; may incur model usage."
-    },
-    {
-      "file": "brainstorming/scripts/server.cjs",
-      "line": 106,
-      "rule": "net-url",
-      "category": "network-egress",
-      "severity": "info",
-      "snippet": "2 external host(s): github.com, primeradiant.com",
-      "note": "External URL literals, aggregated per file. Only meaningful next to a fetch/exec - documentation links are not egress.",
-      "tier": "on-demand",
-      "assessment": "Opt-in companion HTTP/WebSocket server; browser launcher may use operator-provided BRAINSTORM_OPEN_CMD. Do not set that variable from untrusted input. Default is loopback; do not expose it publicly."
     },
     {
       "file": "design-taste-frontend/assets/charts.js",
@@ -2096,17 +1986,6 @@
       "assessment": "Zero-width U+200B prefixes around quoted fenced code; formatting examples, not concealed execution instructions."
     },
     {
-      "file": "diagnosing-superpowers/templates/bundle-README.md",
-      "line": 64,
-      "rule": "md-exfil",
-      "category": "injection",
-      "severity": "high",
-      "snippet": "Reconcile report, case, environment, findings, README and any local issue",
-      "note": "Instructs sending local/secret data somewhere.",
-      "tier": "static-text",
-      "assessment": "Privacy/redaction checklist, not an instruction to upload local environment."
-    },
-    {
       "file": "fix-security-vulnerabilities-with-strix/SKILL.md",
       "line": 77,
       "rule": "md-exfil",
@@ -2208,51 +2087,6 @@
       "file": "audit-context-building/resources/FUNCTION_MICRO_ANALYSIS_EXAMPLE.md",
       "kind": "markdown",
       "bytes": 9056
-    },
-    {
-      "file": "brainstorming/SKILL.md",
-      "kind": "markdown",
-      "bytes": 15166
-    },
-    {
-      "file": "brainstorming/UPSTREAM-LICENSE",
-      "kind": "asset",
-      "bytes": 1070
-    },
-    {
-      "file": "brainstorming/builder-check-prompt.md",
-      "kind": "markdown",
-      "bytes": 881
-    },
-    {
-      "file": "brainstorming/scripts/frame-template.html",
-      "kind": "asset",
-      "bytes": 8094
-    },
-    {
-      "file": "brainstorming/scripts/helper.js",
-      "kind": "code",
-      "bytes": 5615
-    },
-    {
-      "file": "brainstorming/scripts/server.cjs",
-      "kind": "code",
-      "bytes": 25699
-    },
-    {
-      "file": "brainstorming/scripts/start-server.sh",
-      "kind": "code",
-      "bytes": 7315
-    },
-    {
-      "file": "brainstorming/scripts/stop-server.sh",
-      "kind": "code",
-      "bytes": 3472
-    },
-    {
-      "file": "brainstorming/visual-companion.md",
-      "kind": "markdown",
-      "bytes": 13413
     },
     {
       "file": "code-review/SKILL.md",
@@ -2750,111 +2584,6 @@
       "bytes": 1316
     },
     {
-      "file": "diagnosing-superpowers/SKILL.md",
-      "kind": "markdown",
-      "bytes": 6941
-    },
-    {
-      "file": "diagnosing-superpowers/UPSTREAM-LICENSE",
-      "kind": "asset",
-      "bytes": 1070
-    },
-    {
-      "file": "diagnosing-superpowers/prompts/analyst-common.md",
-      "kind": "markdown",
-      "bytes": 1582
-    },
-    {
-      "file": "diagnosing-superpowers/prompts/cost-and-time.md",
-      "kind": "markdown",
-      "bytes": 1640
-    },
-    {
-      "file": "diagnosing-superpowers/prompts/plan-adherence.md",
-      "kind": "markdown",
-      "bytes": 1637
-    },
-    {
-      "file": "diagnosing-superpowers/prompts/quality-evidence.md",
-      "kind": "markdown",
-      "bytes": 1476
-    },
-    {
-      "file": "diagnosing-superpowers/prompts/repeated-work.md",
-      "kind": "markdown",
-      "bytes": 1469
-    },
-    {
-      "file": "diagnosing-superpowers/prompts/request-conflicts.md",
-      "kind": "markdown",
-      "bytes": 1011
-    },
-    {
-      "file": "diagnosing-superpowers/prompts/scrub-audit.md",
-      "kind": "markdown",
-      "bytes": 1363
-    },
-    {
-      "file": "diagnosing-superpowers/prompts/scrub.md",
-      "kind": "markdown",
-      "bytes": 1471
-    },
-    {
-      "file": "diagnosing-superpowers/prompts/similar-session.md",
-      "kind": "markdown",
-      "bytes": 1711
-    },
-    {
-      "file": "diagnosing-superpowers/prompts/skill-timeline.md",
-      "kind": "markdown",
-      "bytes": 1646
-    },
-    {
-      "file": "diagnosing-superpowers/prompts/stumbles.md",
-      "kind": "markdown",
-      "bytes": 1330
-    },
-    {
-      "file": "diagnosing-superpowers/references/context-safety.md",
-      "kind": "markdown",
-      "bytes": 990
-    },
-    {
-      "file": "diagnosing-superpowers/references/github-issues.md",
-      "kind": "markdown",
-      "bytes": 1636
-    },
-    {
-      "file": "diagnosing-superpowers/references/redaction-policy.md",
-      "kind": "markdown",
-      "bytes": 2243
-    },
-    {
-      "file": "diagnosing-superpowers/references/session-discovery.md",
-      "kind": "markdown",
-      "bytes": 1859
-    },
-    {
-      "file": "diagnosing-superpowers/templates/bundle-README.md",
-      "kind": "markdown",
-      "bytes": 3672
-    },
-    {
-      "file": "diagnosing-superpowers/templates/case.md",
-      "kind": "markdown",
-      "bytes": 2983
-    },
-    {
-      "file": "diagnosing-superpowers/templates/issue.md",
-      "kind": "markdown",
-      "bytes": 2680
-    },
-    {
-      "file": "diagnosing-superpowers/templates/report.md",
-      "kind": "markdown",
-      "bytes": 2359
-    },
-    {
       "file": "differential-review/SKILL.md",
       "kind": "markdown",
       "bytes": 7439
@@ -2893,16 +2622,6 @@
       "file": "differential-review/reporting.md",
       "kind": "markdown",
       "bytes": 7006
-    },
-    {
-      "file": "dispatching-parallel-agents/SKILL.md",
-      "kind": "markdown",
-      "bytes": 6078
-    },
-    {
-      "file": "dispatching-parallel-agents/UPSTREAM-LICENSE",
-      "kind": "asset",
-      "bytes": 1070
     },
     {
       "file": "docx/LICENSE.txt",
@@ -3240,26 +2959,6 @@
       "bytes": 101
     },
     {
-      "file": "executing-plans/SKILL.md",
-      "kind": "markdown",
-      "bytes": 18208
-    },
-    {
-      "file": "executing-plans/UPSTREAM-LICENSE",
-      "kind": "asset",
-      "bytes": 1070
-    },
-    {
-      "file": "executing-plans/scripts/task-done",
-      "kind": "code",
-      "bytes": 1900
-    },
-    {
-      "file": "executing-plans/scripts/task-start",
-      "kind": "code",
-      "bytes": 1185
-    },
-    {
       "file": "find-security-vulnerabilities-in-code/SKILL.md",
       "kind": "markdown",
       "bytes": 4386
@@ -3268,16 +2967,6 @@
       "file": "find-security-vulnerabilities-in-code/UPSTREAM-LICENSE",
       "kind": "asset",
       "bytes": 11345
-    },
-    {
-      "file": "finishing-a-development-branch/SKILL.md",
-      "kind": "markdown",
-      "bytes": 7781
-    },
-    {
-      "file": "finishing-a-development-branch/UPSTREAM-LICENSE",
-      "kind": "asset",
-      "bytes": 1070
     },
     {
       "file": "fix-security-vulnerabilities-with-strix/SKILL.md",
@@ -3815,31 +3504,6 @@
       "bytes": 93
     },
     {
-      "file": "receiving-code-review/SKILL.md",
-      "kind": "markdown",
-      "bytes": 6203
-    },
-    {
-      "file": "receiving-code-review/UPSTREAM-LICENSE",
-      "kind": "asset",
-      "bytes": 1070
-    },
-    {
-      "file": "requesting-code-review/SKILL.md",
-      "kind": "markdown",
-      "bytes": 2974
-    },
-    {
-      "file": "requesting-code-review/UPSTREAM-LICENSE",
-      "kind": "asset",
-      "bytes": 1070
-    },
-    {
-      "file": "requesting-code-review/code-reviewer.md",
-      "kind": "markdown",
-      "bytes": 6449
-    },
-    {
       "file": "sarif-parsing/SKILL.md",
       "kind": "markdown",
       "bytes": 17925
@@ -4170,121 +3834,6 @@
       "bytes": 1661
     },
     {
-      "file": "subagent-driven-development/SKILL.md",
-      "kind": "markdown",
-      "bytes": 19704
-    },
-    {
-      "file": "subagent-driven-development/UPSTREAM-LICENSE",
-      "kind": "asset",
-      "bytes": 1070
-    },
-    {
-      "file": "subagent-driven-development/implementer-prompt.md",
-      "kind": "markdown",
-      "bytes": 6335
-    },
-    {
-      "file": "subagent-driven-development/re-review-prompt.md",
-      "kind": "markdown",
-      "bytes": 4833
-    },
-    {
-      "file": "subagent-driven-development/references/batching.md",
-      "kind": "markdown",
-      "bytes": 583
-    },
-    {
-      "file": "subagent-driven-development/references/cannot-verify.md",
-      "kind": "markdown",
-      "bytes": 513
-    },
-    {
-      "file": "subagent-driven-development/references/final-review.md",
-      "kind": "markdown",
-      "bytes": 2576
-    },
-    {
-      "file": "subagent-driven-development/references/fix-loop.md",
-      "kind": "markdown",
-      "bytes": 4314
-    },
-    {
-      "file": "subagent-driven-development/references/handling-reports.md",
-      "kind": "markdown",
-      "bytes": 1062
-    },
-    {
-      "file": "subagent-driven-development/references/preflight.md",
-      "kind": "markdown",
-      "bytes": 1353
-    },
-    {
-      "file": "subagent-driven-development/references/resuming.md",
-      "kind": "markdown",
-      "bytes": 614
-    },
-    {
-      "file": "subagent-driven-development/scripts/review-package",
-      "kind": "code",
-      "bytes": 2444
-    },
-    {
-      "file": "subagent-driven-development/scripts/sdd-repo",
-      "kind": "code",
-      "bytes": 2356
-    },
-    {
-      "file": "subagent-driven-development/scripts/sdd-workspace",
-      "kind": "code",
-      "bytes": 4823
-    },
-    {
-      "file": "subagent-driven-development/scripts/task-brief",
-      "kind": "code",
-      "bytes": 4769
-    },
-    {
-      "file": "subagent-driven-development/task-reviewer-prompt.md",
-      "kind": "markdown",
-      "bytes": 9175
-    },
-    {
-      "file": "systematic-debugging/SKILL.md",
-      "kind": "markdown",
-      "bytes": 9506
-    },
-    {
-      "file": "systematic-debugging/UPSTREAM-LICENSE",
-      "kind": "asset",
-      "bytes": 1070
-    },
-    {
-      "file": "systematic-debugging/condition-based-waiting-example.ts",
-      "kind": "code",
-      "bytes": 5054
-    },
-    {
-      "file": "systematic-debugging/condition-based-waiting.md",
-      "kind": "markdown",
-      "bytes": 3516
-    },
-    {
-      "file": "systematic-debugging/defense-in-depth.md",
-      "kind": "markdown",
-      "bytes": 3650
-    },
-    {
-      "file": "systematic-debugging/find-polluter.sh",
-      "kind": "code",
-      "bytes": 1986
-    },
-    {
-      "file": "systematic-debugging/root-cause-tracing.md",
-      "kind": "markdown",
-      "bytes": 5321
-    },
-    {
       "file": "tdd/SKILL.md",
       "kind": "markdown",
       "bytes": 3629
@@ -4308,21 +3857,6 @@
       "file": "tdd/tests.md",
       "kind": "markdown",
       "bytes": 2214
-    },
-    {
-      "file": "test-driven-development/SKILL.md",
-      "kind": "markdown",
-      "bytes": 9578
-    },
-    {
-      "file": "test-driven-development/UPSTREAM-LICENSE",
-      "kind": "asset",
-      "bytes": 1070
-    },
-    {
-      "file": "test-driven-development/writing-good-tests.md",
-      "kind": "markdown",
-      "bytes": 8268
     },
     {
       "file": "to-spec/SKILL.md",
@@ -4353,61 +3887,6 @@
       "file": "to-tickets/agents/openai.yaml",
       "kind": "config",
       "bytes": 146
-    },
-    {
-      "file": "using-git-worktrees/SKILL.md",
-      "kind": "markdown",
-      "bytes": 6813
-    },
-    {
-      "file": "using-git-worktrees/UPSTREAM-LICENSE",
-      "kind": "asset",
-      "bytes": 1070
-    },
-    {
-      "file": "using-superpowers/SKILL.md",
-      "kind": "markdown",
-      "bytes": 3168
-    },
-    {
-      "file": "using-superpowers/UPSTREAM-LICENSE",
-      "kind": "asset",
-      "bytes": 1070
-    },
-    {
-      "file": "using-superpowers/references/antigravity-tools.md",
-      "kind": "markdown",
-      "bytes": 1495
-    },
-    {
-      "file": "using-superpowers/references/claude-code-tools.md",
-      "kind": "markdown",
-      "bytes": 1469
-    },
-    {
-      "file": "using-superpowers/references/codex-tools.md",
-      "kind": "markdown",
-      "bytes": 4762
-    },
-    {
-      "file": "using-superpowers/references/gemini-tools.md",
-      "kind": "markdown",
-      "bytes": 4598
-    },
-    {
-      "file": "using-superpowers/references/hermes-tools.md",
-      "kind": "markdown",
-      "bytes": 1964
-    },
-    {
-      "file": "using-superpowers/references/muse-tools.md",
-      "kind": "markdown",
-      "bytes": 1908
-    },
-    {
-      "file": "using-superpowers/references/pi-tools.md",
-      "kind": "markdown",
-      "bytes": 1242
     },
     {
       "file": "vercel-cli-with-tokens/SKILL.md",
@@ -5930,16 +5409,6 @@
       "bytes": 4940
     },
     {
-      "file": "verification-before-completion/SKILL.md",
-      "kind": "markdown",
-      "bytes": 3646
-    },
-    {
-      "file": "verification-before-completion/UPSTREAM-LICENSE",
-      "kind": "asset",
-      "bytes": 1070
-    },
-    {
       "file": "web-design-guidelines/SKILL.md",
       "kind": "markdown",
       "bytes": 1231
@@ -5993,71 +5462,6 @@
       "file": "writing-guidelines/UPSTREAM-LICENSE-NOTICE.md",
       "kind": "markdown",
       "bytes": 7482
-    },
-    {
-      "file": "writing-plans/SKILL.md",
-      "kind": "markdown",
-      "bytes": 10275
-    },
-    {
-      "file": "writing-plans/UPSTREAM-LICENSE",
-      "kind": "asset",
-      "bytes": 1070
-    },
-    {
-      "file": "writing-skills/SKILL.md",
-      "kind": "markdown",
-      "bytes": 16714
-    },
-    {
-      "file": "writing-skills/UPSTREAM-LICENSE",
-      "kind": "asset",
-      "bytes": 1070
-    },
-    {
-      "file": "writing-skills/references/CLAUDE_MD_TESTING.md",
-      "kind": "markdown",
-      "bytes": 5423
-    },
-    {
-      "file": "writing-skills/references/anthropic-best-practices.md",
-      "kind": "markdown",
-      "bytes": 46197
-    },
-    {
-      "file": "writing-skills/references/bulletproofing.md",
-      "kind": "markdown",
-      "bytes": 2577
-    },
-    {
-      "file": "writing-skills/references/discovery.md",
-      "kind": "markdown",
-      "bytes": 7616
-    },
-    {
-      "file": "writing-skills/references/flowcharts.md",
-      "kind": "markdown",
-      "bytes": 1262
-    },
-    {
-      "file": "writing-skills/references/graphviz-conventions.dot",
-      "kind": "asset",
-      "bytes": 5970
-    },
-    {
-      "file": "writing-skills/references/persuasion-principles.md",
-      "kind": "markdown",
-      "bytes": 5901
-    },
-    {
-      "file": "writing-skills/references/testing-skills-with-subagents.md",
-      "kind": "markdown",
-      "bytes": 12557
-    },
-    {
-      "file": "writing-skills/render-graphs.js",
-      "kind": "code",
-      "bytes": 4968
     },
     {
       "file": "xlsx/LICENSE.txt",

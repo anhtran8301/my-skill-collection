@@ -2,7 +2,7 @@
 
 Kho công cụ AI cá nhân và starter cho công việc code, debug, spec và review với Claude Code/Codex. Lưu snapshot skill đã rà soát; chỉ cài workflow và nhóm chuyên môn cần cho từng dự án.
 
-**Hai workflow độc lập, 59 skill, 6 pack.** Repo private; clone cần quyền GitHub. Không kèm app mẫu hoặc cấu hình nghiệp vụ từ các project tham khảo.
+**Workflow AI Hero, 44 skill, 6 pack.** Repo private; clone cần quyền GitHub. Không kèm app mẫu hoặc cấu hình nghiệp vụ từ các project tham khảo.
 
 ## Bắt đầu
 
@@ -34,7 +34,7 @@ node scripts/toolkit.mjs apply \
 node scripts/toolkit.mjs check --target ../my-new-project
 ```
 
-Mở dự án đích bằng Claude Code hoặc Codex. AI Hero có entrypoint `ai-dev` (Claude: `/ai-dev`; Codex: `$ai-dev`). Với Superpowers, đổi thành `--workflow superpowers` và dùng các skill standalone của profile.
+Mở dự án đích bằng Claude Code hoặc Codex. AI Hero có entrypoint `ai-dev` (Claude: `/ai-dev`; Codex: `$ai-dev`).
 
 ## Chọn bộ công cụ
 
@@ -42,7 +42,6 @@ Mở dự án đích bằng Claude Code hoặc Codex. AI Hero có entrypoint `ai
 |---|---|
 | Core, luôn có | Ponytail và Context7; cấu hình Context7 MCP |
 | `aihero` | Flow tổng quát từ MDM: làm rõ → spec → ticket → implement → review; debug/TDD/domain modeling, 14 skill |
-| `superpowers` | 15 skill của obra; brainstorming, planning, execution, debug, verify và review |
 | `frontend` | Vercel React/composition/web guidelines, React Native/view transitions/writing; Taste v2 từ MDM |
 | `review` | Code-review-expert, ponytail-review, ponytail-audit |
 | `security` | Trail of Bits audit context/differential review/sharp edges/CodeQL/Semgrep/SARIF; hai skill Strix |
@@ -50,12 +49,12 @@ Mở dự án đích bằng Claude Code hoặc Codex. AI Hero có entrypoint `ai
 | `documents` | Anthropic docx, pdf, pptx, xlsx |
 | `deploy` | Vercel deploy, CLI with tokens và optimize |
 
-Chỉ một workflow được kích hoạt trong mỗi dự án. Lặp `--pack` hoặc dùng danh sách phân cách bằng dấu phẩy. Không chọn pack nghĩa là chỉ cài core + workflow. Chọn pack không cấp quyền chạy pentest, upload source, deploy hay publish.
+AI Hero là workflow duy nhất được hỗ trợ. Lặp `--pack` hoặc dùng danh sách phân cách bằng dấu phẩy. Không chọn pack nghĩa là chỉ cài core + workflow. Chọn pack không cấp quyền chạy pentest, upload source, deploy hay publish.
 
 ```bash
 node scripts/toolkit.mjs apply \
   --target ../existing-project \
-  --workflow superpowers \
+  --workflow aihero \
   --tracker github \
   --github-repo anhtran8301/existing-project \
   --agent both \
@@ -85,7 +84,7 @@ CLI dùng exit code `0` khi thành công, `1` khi có lỗi. Không chạy insta
 
 Chạy dry-run trước. Nếu gặp `AGENTS.md`, `CLAUDE.md`, MCP config hoặc file skill không thuộc toolkit quản lý, toàn bộ apply dừng trước khi ghi. CLI không tự hợp nhất hoặc ghi đè; xem hướng dẫn [xử lý xung đột](docs/usage.md).
 
-File đã cài được quản lý bằng checksum trong `.ai-toolkit/state.json`. Nếu bạn sửa/xóa chúng, apply sẽ dừng và nêu file cần hợp nhất. Với bản chưa sửa, chạy lại cùng lựa chọn không tạo thay đổi. Đổi profile/pack sẽ gỡ file cũ thuộc toolkit và cài bộ mới; file thêm riêng của bạn được giữ.
+File đã cài được quản lý bằng checksum trong `.ai-toolkit/state.json`. Nếu bạn sửa/xóa chúng, apply sẽ dừng và nêu file cần hợp nhất. Với bản chưa sửa, chạy lại cùng lựa chọn không tạo thay đổi. Đổi pack sẽ gỡ file cũ thuộc toolkit và cài bộ mới; file thêm riêng của bạn được giữ.
 
 Tài nguyên nằm trong project đích; Claude dùng symlink tương đối đến cùng bộ skill của Codex. Có thể chuyển hoặc clone project đích mà không cần giữ clone nguồn. Canonical skill store vẫn là `.agents/skills` ngay cả khi chọn Claude, nên Codex chạy sau này cũng có thể khám phá các skill đó. `--agent` điều khiển cấu hình được sinh, không cô lập khả năng đọc thư mục của agent khác.
 
@@ -96,7 +95,7 @@ Tài nguyên nằm trong project đích; Claude dùng symlink tương đối đ�
 - GitHub MCP dùng `GITHUB_MCP_TOKEN` từ môi trường hoặc cấu hình OAuth riêng của client; không ghi token vào file. Xem [MCP](docs/mcp.md).
 - OpenAI Plugins và Addy Osmani có catalog/phiên bản tham chiếu và hướng dẫn cài chính thức trong [plugins](docs/plugins.md). Chưa cài hoặc bật plugin nào; OAuth thực hiện trong công cụ tương ứng.
 
-Không tự thay đổi `~/.claude`, `~/.codex`, cấu hình agent global hoặc hooks. Nếu máy đã cài global AI Hero/Superpowers, tự tắt bộ trùng trước khi dùng profile dự án; CLI không quản lý global skills.
+Không tự thay đổi `~/.claude`, `~/.codex`, cấu hình agent global hoặc hooks. Nếu máy đã cài global skill hoặc workflow, tự tắt bộ trùng trước khi dùng profile dự án; CLI không quản lý global skills.
 
 ## Dùng làm GitHub Template
 
@@ -108,7 +107,7 @@ Nếu muốn app ở root và repo chỉ chứa tài nguyên đã chọn, tạo 
 
 Tham khảo inventory từ **secure-mdm**, **ddcproperty**, **solo-english** và **team-task-manager**. Lockfile chứng minh skill đã được khai báo, không đo tần suất dùng. Nghiệp vụ Laravel/MDM và cấu hình local không được nhập.
 
-- [Danh mục nguồn](catalog/sources.json): đủ các nguồn bạn chọn và nguồn tác giả thực tế.
+- [Danh mục nguồn](catalog/sources.json): các nguồn đang sử dụng và nguồn tác giả thực tế.
 - [Manifest](catalog/manifest.json): revision, checksum, giấy phép, compatibility, review và patch cho từng skill.
 - [Rà soát tĩnh](docs/reviews/snapshots.md): phạm vi, capability, giới hạn và các hành vi đã được harden.
 - [Cập nhật tài nguyên](docs/maintenance.md): tải vào temp → rà soát → cập nhật snapshot/lock → kiểm tra → commit.

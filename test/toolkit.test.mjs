@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
 import { execFileSync, spawnSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { parse as parseTOML } from 'smol-toml';
 import YAML from 'yaml';
 import { ROOT, apply, checkRepository, checkTarget, filesIn } from '../scripts/toolkit.mjs';
@@ -21,13 +22,14 @@ const cli = (...args) => spawnSync(process.execPath, [path.join(ROOT, 'scripts/t
 
 test('repository provenance, metadata, references and checksums', () => {
   assert.equal(checkRepository().skills, data.skills.length);
-  assert.equal(data.skills.length, 59);
+  assert.equal(data.skills.length, 44);
+  assert.deepEqual(Object.keys(data.profiles).sort(), ['aihero', 'core']);
   assert.ok(data.skills.every((skill) => skill.license && skill.sha256 && skill.revision));
   const sources = JSON.parse(fs.readFileSync(path.join(ROOT, 'catalog/sources.json'), 'utf8'));
-  for (const name of ['aihero.dev', 'skills.sh', 'anthropics/skills', 'openai/plugins', 'vercel-labs/agent-skills', 'trailofbits/skills', 'obra/superpowers', 'addyosmani/agent-skills']) assert.ok(sources.some((source) => source.url.includes(name)));
+  for (const name of ['aihero.dev', 'skills.sh', 'anthropics/skills', 'openai/plugins', 'vercel-labs/agent-skills', 'trailofbits/skills', 'addyosmani/agent-skills']) assert.ok(sources.some((source) => source.url.includes(name)));
 });
 
-for (const workflow of ['aihero', 'superpowers']) {
+for (const workflow of ['aihero']) {
   for (const agent of ['claude', 'codex', 'both']) {
     test(`${workflow}/${agent}: setup, MCP syntax and idempotence`, (t) => {
       const target = path.join(temp(t), 'new project');
@@ -62,7 +64,7 @@ test('dry-run leaves nonexistent target and parents untouched', (t) => {
 test('required selections, invalid options and unsafe targets fail before writing', (t) => {
   const dir = temp(t);
   const target = path.join(dir, 'project');
-  for (const extra of [{ workflow: undefined }, { tracker: undefined }, { packs: ['missing'] }, { agent: 'bad' }, { mcps: ['unknown'] }, { workflow: ['aihero', 'superpowers'] }]) assert.throws(() => apply({ ...options, target, ...extra }));
+  for (const extra of [{ workflow: undefined }, { workflow: 'superpowers' }, { tracker: undefined }, { packs: ['missing'] }, { agent: 'bad' }, { mcps: ['unknown'] }, { workflow: ['aihero', 'superpowers'] }]) assert.throws(() => apply({ ...options, target, ...extra }));
   assert.throws(() => apply({ ...options, target: ROOT }));
   assert.deepEqual(fs.readdirSync(dir), []);
   assert.notEqual(cli('apply', '--target', target, '--workflow', 'aihero').status, 0);
@@ -104,33 +106,48 @@ test('symlinked output directories cannot write outside the project', (t) => {
   assert.deepEqual(fs.readdirSync(outside), []);
 });
 
-test('switching workflow removes only owned files and preserves unrelated additions', (t) => {
+test('removing a pack removes only owned files and preserves unrelated additions', (t) => {
   const target = temp(t);
   apply({ ...options, target, packs: ['review'] });
   fs.mkdirSync(path.join(target, '.agents/skills/user-skill'));
   fs.writeFileSync(path.join(target, '.agents/skills/user-skill/SKILL.md'), 'user skill');
-  apply({ ...options, target, workflow: 'superpowers' });
-  assert.ok(!fs.existsSync(path.join(target, '.agents/skills/ai-dev/SKILL.md')));
-  assert.ok(!fs.lstatSync(path.join(target, '.claude/skills/ai-dev'), { throwIfNoEntry: false }));
-  assert.ok(fs.existsSync(path.join(target, '.agents/skills/brainstorming/SKILL.md')));
+  apply({ ...options, target });
+  assert.ok(!fs.existsSync(path.join(target, '.agents/skills/ponytail-review/SKILL.md')));
+  assert.ok(!fs.lstatSync(path.join(target, '.claude/skills/ponytail-review'), { throwIfNoEntry: false }));
+  assert.ok(fs.existsSync(path.join(target, '.agents/skills/ai-dev/SKILL.md')));
   assert.equal(read(target, '.agents/skills/user-skill/SKILL.md'), 'user skill');
-  assert.equal(checkTarget(target).workflow, 'superpowers');
+  assert.equal(checkTarget(target).workflow, 'aihero');
 });
 
-test('unmanaged opposite workflow blocks setup', (t) => {
-  const target = temp(t);
-  fs.mkdirSync(path.join(target, '.agents/skills/brainstorming'), { recursive: true });
-  fs.writeFileSync(path.join(target, '.agents/skills/brainstorming/SKILL.md'), 'existing');
-  assert.throws(() => apply({ ...options, target }), /Workflow khác/);
-  assert.ok(!fs.existsSync(path.join(target, '.ai-toolkit')));
-});
-
-test('check detects an opposite workflow added after setup', (t) => {
+test('an existing owned retired workflow can migrate to AI Hero', (t) => {
   const target = temp(t);
   apply({ ...options, target });
-  fs.mkdirSync(path.join(target, '.agents/skills/brainstorming'), { recursive: true });
-  fs.writeFileSync(path.join(target, '.agents/skills/brainstorming/SKILL.md'), 'manually installed');
-  assert.throws(() => checkTarget(target), /Workflow khác/);
+  const legacy = state(target);
+  legacy.options.workflow = 'superpowers';
+  const relative = '.agents/skills/retired-workflow/SKILL.md';
+  const content = 'legacy workflow snapshot\n';
+  fs.mkdirSync(path.dirname(path.join(target, relative)), { recursive: true });
+  fs.writeFileSync(path.join(target, relative), content);
+  legacy.files[relative] = `file:${createHash('sha256').update(content).digest('hex')}:-`;
+  const alias = '.claude/skills/retired-workflow';
+  const link = '../../.agents/skills/retired-workflow';
+  fs.symlinkSync(link, path.join(target, alias), 'dir');
+  legacy.files[alias] = `link:${link}`;
+  fs.writeFileSync(path.join(target, '.ai-toolkit/state.json'), JSON.stringify(legacy));
+  assert.throws(() => checkTarget(target), /--workflow aihero/);
+  apply({ ...options, target });
+  assert.ok(!fs.existsSync(path.join(target, relative)));
+  assert.ok(!fs.lstatSync(path.join(target, alias), { throwIfNoEntry: false }));
+  assert.equal(checkTarget(target).workflow, 'aihero');
+});
+
+test('an unsupported workflow does not change an existing project', (t) => {
+  const target = temp(t);
+  apply({ ...options, target });
+  const before = read(target, '.ai-toolkit/state.json');
+  assert.throws(() => apply({ ...options, target, workflow: 'superpowers' }), /--workflow aihero/);
+  assert.equal(read(target, '.ai-toolkit/state.json'), before);
+  assert.equal(checkTarget(target).workflow, 'aihero');
 });
 
 test('all packs, additional MCPs and portable copied project', (t) => {

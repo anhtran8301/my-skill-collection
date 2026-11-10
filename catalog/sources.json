@@ -25,11 +25,6 @@
     "role": "selected snapshots"
   },
   {
-    "url": "https://github.com/obra/superpowers",
-    "revision": "22f0b463e7a5e579904dd6211a520321035526f7",
-    "role": "selected snapshots"
-  },
-  {
     "url": "https://github.com/addyosmani/agent-skills",
     "revision": "301b02b12bff98e4688e6984af6556802322bbde",
     "role": "catalog-only plugins; no code redistributed"
